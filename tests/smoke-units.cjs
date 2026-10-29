@@ -6,7 +6,7 @@ const {_electron:electron}=require('playwright');const fs=require('fs');const pa
   await page.getByRole('button',{name:'Crear demo OHLC sintética 2020–2025',exact:true}).click();await page.getByText('Datos cargados:',{exact:false}).waitFor({timeout:30000});
   // Inspect every infografía/preset and load its original local image.
   for(let unit=2;unit<=10;unit++){
-   await page.locator('.unit-tabs button').nth(unit-2).click();await page.getByText(`Ver infografía original · U${unit}`,{exact:true}).click();const img=page.locator('.source-infographic');await img.waitFor();await img.evaluate(image=>image.decode());assert(await img.evaluate(image=>image.naturalWidth>0));await page.getByText(`Ver infografía original · U${unit}`,{exact:true}).click();
+   await page.locator('.unit-tabs button').nth(unit-2).click();await page.getByText(`Ver infografía original · U${unit}`,{exact:true}).click();const img=page.locator('.source-infographic:not(.supplemental-source)');await img.waitFor();await img.evaluate(image=>image.decode());assert(await img.evaluate(image=>image.naturalWidth>0));await page.getByText(`Ver infografía original · U${unit}`,{exact:true}).click();
   }
   // Actual IPC execution, dates, scopes and export for each task family.
   for(const unit of [2,3,4,5,6,7,8,9,10]){

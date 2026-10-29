@@ -85,3 +85,7 @@ Build aprobado y prueba Electron `node tests/smoke-brand.cjs` aprobada: nombre, 
 - Build de TypeScript/Vite aprobado.
 - `npm run smoke:cdcgan` aprobado en Electron: U9 con cinco condiciones, cDCGAN, embeddings, sensibilidad al régimen con ruido fijo, diagnóstico, banco de variantes, exportación ZIP y ejecución del CLI desde el paquete extraído.
 - Pruebas realizadas con datos sintéticos y presupuesto corto; verifican funcionamiento, no calidad predictiva ni calibración financiera.
+
+## Infografía complementaria 1.5.1
+
+Build aprobado y `npm run smoke:infographics` aprobado: ambas láminas de Unidad 9 se decodifican en Electron y sus hashes coinciden con el manifiesto. La imagen original no se modificó. Revisión visual de la nueva lámina realizada antes de integrarla.

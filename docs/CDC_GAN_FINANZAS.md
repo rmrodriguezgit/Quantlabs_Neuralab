@@ -62,3 +62,7 @@ python bot_infer.py --bundle . --asset 0 --scenarios 64 --regime 0
 Esta versión genera ventanas por activo. **No implementa un generador multiactivo conjunto ni correlaciones cruzadas entre trayectorias de activos.** Tampoco calibra probabilidades de pérdidas ni envía órdenes.
 
 ![Controles de condiciones y dinámica temporal](cdcgan-condiciones.png)
+
+## Dos infografías en Unidad 9 · 1.5.1
+
+La lámina original de modelos generativos se conserva sin cambios. Una segunda entrada, «Ver nueva infografía · cDCGAN 1D y condiciones financieras», muestra la ampliación en diez pasos. Ambas se incluyen como imágenes locales en la aplicación y en el ZIP.

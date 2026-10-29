@@ -45,7 +45,16 @@
     "unit": 9,
     "originalFilename": "Unidad_09_Infografia.png",
     "asset": "unidad-9.png",
-    "sha256": "bda63a3eaea2e1775e55f24f5e6818d4db44bb4cdbd12fb0b13df0e41de9ae09"
+    "sha256": "bda63a3eaea2e1775e55f24f5e6818d4db44bb4cdbd12fb0b13df0e41de9ae09",
+    "supplements": [
+      {
+        "title": "cDCGAN 1D y condiciones financieras",
+        "asset": "unidad-9-cdcgan.png",
+        "sha256": "260eb45189e827e94d59b9cf0f4494d48a985482c703f1759823749ecf046009",
+        "source": "Infografía complementaria generada para Quantlabs Neurolab",
+        "addedInVersion": "1.5.1"
+      }
+    ]
   },
   {
     "unit": 10,
