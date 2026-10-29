@@ -1,0 +1,1681 @@
+{
+  "elapsedSeconds": 10.191092207911424,
+  "mode": "predictive",
+  "criterion": "MSE menor; R² mayor sobre las mismas etiquetas de validación",
+  "units": "bps log intradía siguiente",
+  "bestFamily": "lstm",
+  "winners": [
+    {
+      "id": "lstm-1",
+      "family": "lstm",
+      "trial": 1,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 1.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "decoder": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "generator": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "discriminator": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.00041078952518421074
+        },
+        "projectInput": false,
+        "denseWidths": [
+          16
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5348.871007583911,
+        "rmse": 73.13597615116592,
+        "mae": 57.104566106460624,
+        "r2": 0.0220208615594909
+      },
+      "selectionScore": 5348.871007583911,
+      "parameters": 1809,
+      "trainingControl": {
+        "enabled": true,
+        "requestedEpochs": 1500,
+        "actualEpochs": 54,
+        "bestEpoch": 39,
+        "bestValue": 0.761864423751831,
+        "criterion": "validation MSE normalizado",
+        "patience": 15,
+        "minDelta": 0.0001,
+        "warmupEpochs": 10,
+        "stopReason": "early_stopping",
+        "restoredBestWeights": true
+      },
+      "test": {
+        "mse": 7030.246455704513,
+        "rmse": 83.84656496067393,
+        "mae": 65.75105481605083,
+        "r2": -0.040956894787276044
+      },
+      "scalers": {
+        "featureMean": [
+          -3.495403143460862e-05,
+          -3.397942055016756e-05,
+          -0.00017242987814825028,
+          -0.00030684450757689774,
+          -0.00018547492800280452,
+          -0.0005324360099621117,
+          -0.007539521902799606,
+          -0.0009782551787793636,
+          -0.001122866990044713,
+          0.008729422464966774,
+          0.012545459903776646
+        ],
+        "featureScale": [
+          0.008950344286859035,
+          0.008950935676693916,
+          0.020419683307409286,
+          0.02956240624189377,
+          0.013289688155055046,
+          0.020699335262179375,
+          0.1298215389251709,
+          0.011672431603074074,
+          0.01112237386405468,
+          0.0017923734849318862,
+          0.0055906642228364944
+        ],
+        "targetMean": -0.33061639848524055,
+        "targetScale": 83.79000435781498
+      },
+      "kind": "predictive",
+      "lookback": 10,
+      "features": [
+        "ret_lag1",
+        "ret_lag2",
+        "momentum5",
+        "momentum10",
+        "ema10_distance",
+        "ema20_distance",
+        "rsi14",
+        "macd",
+        "macd_signal",
+        "volatility20",
+        "range_ratio"
+      ],
+      "artifact": {
+        "id": "0c5fec4cc10547c39f32fa56a4ba1a3f",
+        "filename": "lstm-inference.zip",
+        "sha256": "a3a9797825f6922cb21711d025a5a93281f6ec39b2e702caaea16076f5b8577a",
+        "bytes": 97196,
+        "contains": [
+          "manifest JSON",
+          "modelos Keras",
+          "pesos NPZ",
+          "escaladores",
+          "contexto OHLC",
+          "script de inferencia",
+          "controles paper"
+        ]
+      }
+    },
+    {
+      "id": "ridge-2",
+      "family": "ridge",
+      "trial": 2,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 10.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "decoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "generator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "discriminator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0007595735810332171
+        },
+        "projectInput": false,
+        "denseWidths": [
+          32
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5358.268202815953,
+        "rmse": 73.20019264193198,
+        "mae": 57.83524811454757,
+        "r2": 0.020302693205129785
+      },
+      "selectionScore": 5358.268202815953,
+      "parameters": 111,
+      "trainingControl": null,
+      "test": {
+        "mse": 6916.105816001404,
+        "rmse": 83.16312774301724,
+        "mae": 65.03240806211853,
+        "r2": -0.02405628018962247
+      },
+      "scalers": {
+        "featureMean": [
+          -3.495403143460862e-05,
+          -3.397942055016756e-05,
+          -0.00017242987814825028,
+          -0.00030684450757689774,
+          -0.00018547492800280452,
+          -0.0005324360099621117,
+          -0.007539521902799606,
+          -0.0009782551787793636,
+          -0.001122866990044713,
+          0.008729422464966774,
+          0.012545459903776646
+        ],
+        "featureScale": [
+          0.008950344286859035,
+          0.008950935676693916,
+          0.020419683307409286,
+          0.02956240624189377,
+          0.013289688155055046,
+          0.020699335262179375,
+          0.1298215389251709,
+          0.011672431603074074,
+          0.01112237386405468,
+          0.0017923734849318862,
+          0.0055906642228364944
+        ],
+        "targetMean": -0.33061639848524055,
+        "targetScale": 83.79000435781498
+      },
+      "kind": "ridge",
+      "lookback": 10,
+      "features": [
+        "ret_lag1",
+        "ret_lag2",
+        "momentum5",
+        "momentum10",
+        "ema10_distance",
+        "ema20_distance",
+        "rsi14",
+        "macd",
+        "macd_signal",
+        "volatility20",
+        "range_ratio"
+      ],
+      "artifact": {
+        "id": "42b8e3b3628c40e6981bec2ee500f7bd",
+        "filename": "ridge-inference.zip",
+        "sha256": "06e94f859cb835bf75ce4bf58ceeee24ed8ee77e98a3f7866af55f60851412c4",
+        "bytes": 79370,
+        "contains": [
+          "manifest JSON",
+          "coeficientes numéricos JSON",
+          "escaladores",
+          "contexto OHLC",
+          "script de inferencia",
+          "controles paper"
+        ]
+      }
+    },
+    {
+      "id": "mlp-1",
+      "family": "mlp",
+      "trial": 1,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 1.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "decoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "generator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "discriminator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005311203831609665
+        },
+        "projectInput": true,
+        "denseWidths": [
+          32
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5592.86860869933,
+        "rmse": 74.78548394373958,
+        "mae": 60.438593867863126,
+        "r2": -0.022591274979616882
+      },
+      "selectionScore": 5592.86860869933,
+      "parameters": 3585,
+      "trainingControl": {
+        "enabled": true,
+        "requestedEpochs": 1500,
+        "actualEpochs": 35,
+        "bestEpoch": 20,
+        "bestValue": 0.7966181039810181,
+        "criterion": "validation MSE normalizado",
+        "patience": 15,
+        "minDelta": 0.0001,
+        "warmupEpochs": 10,
+        "stopReason": "early_stopping",
+        "restoredBestWeights": true
+      },
+      "test": {
+        "mse": 7062.60086952036,
+        "rmse": 84.03928170516666,
+        "mae": 65.55486651524134,
+        "r2": -0.04574755900518235
+      },
+      "scalers": {
+        "featureMean": [
+          -3.495403143460862e-05,
+          -3.397942055016756e-05,
+          -0.00017242987814825028,
+          -0.00030684450757689774,
+          -0.00018547492800280452,
+          -0.0005324360099621117,
+          -0.007539521902799606,
+          -0.0009782551787793636,
+          -0.001122866990044713,
+          0.008729422464966774,
+          0.012545459903776646
+        ],
+        "featureScale": [
+          0.008950344286859035,
+          0.008950935676693916,
+          0.020419683307409286,
+          0.02956240624189377,
+          0.013289688155055046,
+          0.020699335262179375,
+          0.1298215389251709,
+          0.011672431603074074,
+          0.01112237386405468,
+          0.0017923734849318862,
+          0.0055906642228364944
+        ],
+        "targetMean": -0.33061639848524055,
+        "targetScale": 83.79000435781498
+      },
+      "kind": "predictive",
+      "lookback": 10,
+      "features": [
+        "ret_lag1",
+        "ret_lag2",
+        "momentum5",
+        "momentum10",
+        "ema10_distance",
+        "ema20_distance",
+        "rsi14",
+        "macd",
+        "macd_signal",
+        "volatility20",
+        "range_ratio"
+      ],
+      "artifact": {
+        "id": "9c1c6f9f42ca4867809c2a2c814fc5cd",
+        "filename": "mlp-inference.zip",
+        "sha256": "84ba8c7521d4987337da89e3778c6c55c4fb5d4701bf1bc9cb45f30da0706235",
+        "bytes": 110009,
+        "contains": [
+          "manifest JSON",
+          "modelos Keras",
+          "pesos NPZ",
+          "escaladores",
+          "contexto OHLC",
+          "script de inferencia",
+          "controles paper"
+        ]
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "ridge-1",
+      "family": "ridge",
+      "trial": 1,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 0.1,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 16,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005241302431101214
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 16,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005241302431101214
+        },
+        "decoder": {
+          "inputUnits": 16,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005241302431101214
+        },
+        "generator": {
+          "inputUnits": 16,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005241302431101214
+        },
+        "discriminator": {
+          "inputUnits": 16,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0008497652357638038
+        },
+        "projectInput": false,
+        "denseWidths": [
+          16
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5422.407167913073,
+        "rmse": 73.63699591858071,
+        "mae": 57.836771398505604,
+        "r2": 0.008575625990906444
+      },
+      "selectionScore": 5422.407167913073,
+      "parameters": 111,
+      "trainingControl": null
+    },
+    {
+      "id": "ridge-2",
+      "family": "ridge",
+      "trial": 2,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 10.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "decoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "generator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003524428252262231
+        },
+        "discriminator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0007595735810332171
+        },
+        "projectInput": false,
+        "denseWidths": [
+          32
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5358.268202815953,
+        "rmse": 73.20019264193198,
+        "mae": 57.83524811454757,
+        "r2": 0.020302693205129785
+      },
+      "selectionScore": 5358.268202815953,
+      "parameters": 111,
+      "trainingControl": null
+    },
+    {
+      "id": "mlp-1",
+      "family": "mlp",
+      "trial": 1,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 1.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "decoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "generator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0003664855167788064
+        },
+        "discriminator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005311203831609665
+        },
+        "projectInput": true,
+        "denseWidths": [
+          32
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5592.86860869933,
+        "rmse": 74.78548394373958,
+        "mae": 60.438593867863126,
+        "r2": -0.022591274979616882
+      },
+      "selectionScore": 5592.86860869933,
+      "parameters": 3585,
+      "trainingControl": {
+        "enabled": true,
+        "requestedEpochs": 1500,
+        "actualEpochs": 35,
+        "bestEpoch": 20,
+        "bestValue": 0.7966181039810181,
+        "criterion": "validation MSE normalizado",
+        "patience": 15,
+        "minDelta": 0.0001,
+        "warmupEpochs": 10,
+        "stopReason": "early_stopping",
+        "restoredBestWeights": true
+      }
+    },
+    {
+      "id": "mlp-2",
+      "family": "mlp",
+      "trial": 2,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 1.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.0,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0009191417521106827
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.0,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0009191417521106827
+        },
+        "decoder": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.0,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0009191417521106827
+        },
+        "generator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.0,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0009191417521106827
+        },
+        "discriminator": {
+          "inputUnits": 32,
+          "inputActivation": "relu",
+          "layers": [
+            {
+              "units": 32,
+              "activation": "relu",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.0,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0006636400082346039
+        },
+        "projectInput": true,
+        "denseWidths": [
+          32
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5693.468052491731,
+        "rmse": 75.4550730732648,
+        "mae": 60.886700330142844,
+        "r2": -0.04098471861065467
+      },
+      "selectionScore": 5693.468052491731,
+      "parameters": 3585,
+      "trainingControl": {
+        "enabled": true,
+        "requestedEpochs": 1500,
+        "actualEpochs": 26,
+        "bestEpoch": 6,
+        "bestValue": 0.8109470009803772,
+        "criterion": "validation MSE normalizado",
+        "patience": 15,
+        "minDelta": 0.0001,
+        "warmupEpochs": 10,
+        "stopReason": "early_stopping",
+        "restoredBestWeights": true
+      }
+    },
+    {
+      "id": "lstm-1",
+      "family": "lstm",
+      "trial": 1,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 1.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "decoder": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "generator": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0005268744024449784
+        },
+        "discriminator": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.00041078952518421074
+        },
+        "projectInput": false,
+        "denseWidths": [
+          16
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 5348.871007583911,
+        "rmse": 73.13597615116592,
+        "mae": 57.104566106460624,
+        "r2": 0.0220208615594909
+      },
+      "selectionScore": 5348.871007583911,
+      "parameters": 1809,
+      "trainingControl": {
+        "enabled": true,
+        "requestedEpochs": 1500,
+        "actualEpochs": 54,
+        "bestEpoch": 39,
+        "bestValue": 0.761864423751831,
+        "criterion": "validation MSE normalizado",
+        "patience": 15,
+        "minDelta": 0.0001,
+        "warmupEpochs": 10,
+        "stopReason": "early_stopping",
+        "restoredBestWeights": true
+      }
+    },
+    {
+      "id": "lstm-2",
+      "family": "lstm",
+      "trial": 2,
+      "config": {
+        "epochs": 1500,
+        "earlyStopping": true,
+        "patience": 15,
+        "warmupEpochs": 10,
+        "minDelta": 0.0001,
+        "batchSize": 64,
+        "timeoutMinutes": 120,
+        "trainStart": "2020-01-01T00:00:00",
+        "testEnd": "2026-01-01T00:00:00",
+        "validationStart": "2024-01-01T00:00:00",
+        "testStart": "2025-01-01T00:00:00",
+        "selectedFeatures": [
+          "ret_lag1",
+          "ret_lag2",
+          "momentum5",
+          "momentum10",
+          "ema10_distance",
+          "ema20_distance",
+          "rsi14",
+          "macd",
+          "macd_signal",
+          "volatility20",
+          "range_ratio"
+        ],
+        "seed": 42,
+        "lookback": 10,
+        "ridgeAlpha": 1.0,
+        "costBps": 5.0,
+        "l1": 1e-05,
+        "l2": 0.001,
+        "weightDecay": 0.0,
+        "dropout": 0.3,
+        "gradientClip": 1.0,
+        "architecture": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.00034033657818181867
+        },
+        "includeEarlyStopping": true,
+        "featurePeriods": {
+          "rsi": 14,
+          "volatility": 20,
+          "emaFast": 10,
+          "emaSlow": 20,
+          "macdFast": 12,
+          "macdSlow": 26,
+          "macdSignal": 9
+        },
+        "encoder": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.00034033657818181867
+        },
+        "decoder": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.00034033657818181867
+        },
+        "generator": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.00034033657818181867
+        },
+        "discriminator": {
+          "inputUnits": 16,
+          "inputActivation": "tanh",
+          "layers": [
+            {
+              "units": 16,
+              "activation": "tanh",
+              "recurrentActivation": "sigmoid",
+              "dropout": 0.1,
+              "kernelSize": 3
+            }
+          ],
+          "optimizer": "adam",
+          "learningRate": 0.0008200032732747192
+        },
+        "projectInput": false,
+        "denseWidths": [
+          16
+        ],
+        "latentDim": 2,
+        "cnnPadding": "causal",
+        "generativeModels": [
+          "cvae",
+          "cgan"
+        ]
+      },
+      "validation": {
+        "mse": 6074.867136135556,
+        "rmse": 77.94143401385143,
+        "mae": 61.27019814029693,
+        "r2": -0.11071912549672991
+      },
+      "selectionScore": 6074.867136135556,
+      "parameters": 1809,
+      "trainingControl": {
+        "enabled": true,
+        "requestedEpochs": 1500,
+        "actualEpochs": 30,
+        "bestEpoch": 15,
+        "bestValue": 0.8652714490890503,
+        "criterion": "validation MSE normalizado",
+        "patience": 15,
+        "minDelta": 0.0001,
+        "warmupEpochs": 10,
+        "stopReason": "early_stopping",
+        "restoredBestWeights": true
+      }
+    }
+  ],
+  "failures": [],
+  "search": {
+    "widths": [
+      16,
+      32
+    ],
+    "depths": [
+      1
+    ],
+    "lookbacks": [
+      10
+    ],
+    "latentDims": [
+      2
+    ],
+    "optimizers": [
+      "adam"
+    ],
+    "dropouts": [
+      0.0,
+      0.1
+    ],
+    "lrLogMin": -3.5,
+    "lrLogMax": -3.0
+  },
+  "config": {
+    "epochs": 1500,
+    "earlyStopping": true,
+    "patience": 15,
+    "warmupEpochs": 10,
+    "minDelta": 0.0001,
+    "batchSize": 64,
+    "timeoutMinutes": 120,
+    "trainStart": "2020-01-01T00:00:00",
+    "testEnd": "2026-01-01T00:00:00",
+    "validationStart": "2024-01-01T00:00:00",
+    "testStart": "2025-01-01T00:00:00",
+    "selectedFeatures": [
+      "ret_lag1",
+      "ret_lag2",
+      "momentum5",
+      "momentum10",
+      "ema10_distance",
+      "ema20_distance",
+      "rsi14",
+      "macd",
+      "macd_signal",
+      "volatility20",
+      "range_ratio"
+    ],
+    "seed": 42,
+    "lookback": 20,
+    "ridgeAlpha": 1.0,
+    "costBps": 5.0,
+    "l1": 1e-05,
+    "l2": 0.001,
+    "weightDecay": 0.0,
+    "dropout": 0.3,
+    "gradientClip": 1.0,
+    "architecture": {
+      "inputUnits": 64,
+      "inputActivation": "relu",
+      "layers": [
+        {
+          "units": 32,
+          "activation": "relu",
+          "recurrentActivation": "sigmoid",
+          "dropout": 0.0,
+          "kernelSize": 3
+        }
+      ],
+      "optimizer": "adam",
+      "learningRate": 0.001
+    },
+    "includeEarlyStopping": true,
+    "featurePeriods": {
+      "rsi": 14,
+      "volatility": 20,
+      "emaFast": 10,
+      "emaSlow": 20,
+      "macdFast": 12,
+      "macdSlow": 26,
+      "macdSignal": 9
+    }
+  },
+  "splits": {
+    "train": {
+      "samples": 1000,
+      "firstSignal": "2020-02-28T00:00:00",
+      "lastTarget": "2023-12-29T00:00:00"
+    },
+    "validation": {
+      "samples": 261,
+      "firstSignal": "2024-01-01T00:00:00",
+      "lastTarget": "2024-12-31T00:00:00"
+    },
+    "test": {
+      "samples": 259,
+      "firstSignal": "2025-01-01T00:00:00",
+      "lastTarget": "2025-12-30T00:00:00"
+    }
+  },
+  "testPolicy": "Test evaluado solo para la variante ganadora de cada familia, después de toda la búsqueda. No se usa para elegir variantes.",
+  "note": "Con las mismas etiquetas, minimizar MSE equivale a maximizar R² si su varianza no es cero. Las métricas entre tareas diferentes no se mezclan.",
+  "dataSource": "DEMO OHLC sintética, no entrenamiento con SPY"
+}

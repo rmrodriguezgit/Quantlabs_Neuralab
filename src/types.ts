@@ -1,0 +1,21 @@
+export type Frequency='daily'|'business'|'monthly'|'annual'|'hourly'|'15min';
+export interface Dataset {id:string;name:string;kind:'business'|'financial';frequency:Frequency;columns:string[];rows:({date:string}&Record<string,string|number>)[]}
+export interface Metrics {mse:number;rmse:number;mae:number;r2:number|null}
+export interface Rank extends Metrics {method:string;folds:number;observations:number;foldMetrics:Metrics[]}
+export interface Forecast {trainingControl?:TrainingSummary;validationLoss?:number[];network?:NetworkMetadata;trainingLoss?:number[];ganLoss?:{generator:number;discriminator:number;reconstruction:number;validation?:number}[];dates:string[];prediction:number[];lower?:number[];upper?:number[];intervalLabel?:string;note?:string;volatility?:number[];actions?:number[];trainingRewards?:number[]}
+export interface Analysis {experiment?:{methods:string[];options:{networks?:Partial<NetworkConfigs>};seed:number;folds:number;validationSteps:number;forecastSteps:number};winner:string|null;ranking:Rank[];reports:{label:string;steps:number;winner:string|null;ranking:Rank[];errors:{method:string;error:string}[]}[];failures:{method:string;scope:string;error:string}[];test?:Forecast&{actual:number[];metrics:Metrics};future?:Forecast;dates:string[];actual:number[];decomposition:{trend:number[];seasonal:number[];residual:number[];note:string};residualHistogram?:{bin:string;count:number}[];anova?:{f:number|null;p:number|null;note:string}|null;note:string}
+export interface SavedRun {datasetId:string;datasetName:string;column:string;result:Analysis;at:string}
+declare global {interface Window {lab:{onProgress:(callback:(value:unknown)=>void)=>()=>void;saveArtifact:(id:string)=>Promise<boolean>;bundleArtifacts:(ids:string[],report:unknown)=>Promise<{id:string}>;run:(request:unknown)=>Promise<any>;importFiles:()=>Promise<{dataset?:Dataset;name?:string;error?:string}[]>;save:(request:{format:'csv'|'xlsx'|'json';data:unknown})=>Promise<boolean>}}}
+export const METHODS:Record<string,{label:string;dependency?:string}>={naive:{label:'Persistencia (base)'},linear:{label:'Regresión lineal'},polynomial:{label:'Regresión polinómica'},arima:{label:'ARIMA'},sarima:{label:'SARIMA'},garch:{label:'GARCH',dependency:'arch'},monte_carlo:{label:'Monte Carlo'},rnn:{label:'RNN',dependency:'tensorflow'},cnn:{label:'CNN 1D',dependency:'tensorflow'},lstm:{label:'LSTM',dependency:'tensorflow'},prophet:{label:'Prophet',dependency:'prophet'},qlearning:{label:'Q-Learning',dependency:'gymnasium'},dqn:{label:'DQN',dependency:'dqn'},gan:{label:'GAN condicional',dependency:'tensorflow'}};
+export const label=(method:string)=>METHODS[method]?.label||method;
+export const num=(v:number|null|undefined)=>v==null?'—':v.toLocaleString('es-MX',{maximumFractionDigits:3});
+
+export type NetworkName='rnn'|'cnn'|'lstm'|'dqn'|'gan';
+export interface LayerConfig {units:number;activation:string;recurrentActivation:string;dropout:number;kernelSize:number}
+export interface Architecture {inputUnits:number;inputActivation:string;layers:LayerConfig[];optimizer:string;learningRate:number}
+export interface FeatureConfig {lags:number[];ema:number[];sma:number[];rsi:boolean;rsiPeriod:number;macd:boolean;macdFast:number;macdSlow:number;macdSignal:number;returns:boolean;volatility:boolean;volatilityPeriod:number}
+export interface NetworkConfig extends Architecture {earlyStopping:boolean;patience:number;minDelta:number;warmupEpochs:number;validationFraction:number;lookback:number;epochs:number;batchSize:number;features:FeatureConfig;discriminator:Architecture;latentDim:number;draws:number;reconstructionWeight:number}
+export type NetworkConfigs=Record<NetworkName,NetworkConfig>;
+export interface NetworkMetadata {config:NetworkConfig;inputShape:number[];outputShape:number[];features:string[];trainingSamples:number;validationSamples?:number;trainingEndIndex?:number;warmup:number;parameters:number;layers:{name:string;type:string;units:number|null;activation:string|null}[];discriminator?:NetworkMetadata}
+
+export interface TrainingSummary {enabled:boolean;requestedEpochs:number;actualEpochs:number;bestEpoch:number;bestValue:number;criterion:string;patience:number;minDelta:number;warmupEpochs:number;stopReason:string;restoredBestWeights:boolean}

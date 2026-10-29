@@ -1,0 +1,56 @@
+[
+  {
+    "unit": 2,
+    "originalFilename": "Unidad_02_Infografia.png",
+    "asset": "unidad-2.png",
+    "sha256": "235282a536a56e4246c5af954e8cf0cb001cf37e2071bfd8f9e1057b601cf0c0"
+  },
+  {
+    "unit": 3,
+    "originalFilename": "Unidad_03_Infografia.png",
+    "asset": "unidad-3.png",
+    "sha256": "3018a5e92a5f85a99ce0b5a0db6123dc5758f4160c79d66ab6870b8e4a3ddb2d"
+  },
+  {
+    "unit": 4,
+    "originalFilename": "Unidad_04_Infografia.png",
+    "asset": "unidad-4.png",
+    "sha256": "c080356f250060a39ab9013bdd141267f838550b29ef20d496f0ff66edddc2f2"
+  },
+  {
+    "unit": 5,
+    "originalFilename": "Unidad_05_Infografia.png",
+    "asset": "unidad-5.png",
+    "sha256": "c00fbd93f0baf711787ef544137d93376e77e627e64542524a5e838174af2ddd"
+  },
+  {
+    "unit": 6,
+    "originalFilename": "Unidad_06_Infografia.png",
+    "asset": "unidad-6.png",
+    "sha256": "45bec864df93a47c3421c8a832ac8279461885cbac403151011aaf1b71af9ff8"
+  },
+  {
+    "unit": 7,
+    "originalFilename": "Unidad_07_Infografia.png",
+    "asset": "unidad-7.png",
+    "sha256": "e70e1f70119376d15e2941c99b8cb1e6f9c1b61a01e1316edb9eac75741a7e2d"
+  },
+  {
+    "unit": 8,
+    "originalFilename": "Unidad_08_Infografia.png",
+    "asset": "unidad-8.png",
+    "sha256": "8b9da19212f3c0189849895c20a210e69f4994c9f31e6c00e6feb756b0b61199"
+  },
+  {
+    "unit": 9,
+    "originalFilename": "Unidad_09_Infografia.png",
+    "asset": "unidad-9.png",
+    "sha256": "bda63a3eaea2e1775e55f24f5e6818d4db44bb4cdbd12fb0b13df0e41de9ae09"
+  },
+  {
+    "unit": 10,
+    "originalFilename": "Imagen de ChatGPT 25 oct 2026, 01_33_05 p.m (1).png",
+    "asset": "unidad-10.png",
+    "sha256": "2e1c24c99c5545cfca410fce28a608e82665c3b4c702466df3b363cf287d6153"
+  }
+]

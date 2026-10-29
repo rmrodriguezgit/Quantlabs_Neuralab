@@ -1,0 +1,15 @@
+node_modules/
+.venv/
+dist/
+dist-electron/
+release/
+__pycache__/
+*.pyc
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+.pytest_cache/
+.mypy_cache/
+forecast-artifacts/

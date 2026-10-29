@@ -1,0 +1,1466 @@
+[
+  {
+    "key": "naive",
+    "title": "Persistencia",
+    "concept": "El último valor observado se repite en todos los horizontes.",
+    "formula": "\\hat y_{t+h}=y_t",
+    "assumptions": "Series con cambios difíciles de anticipar; referencia mínima.",
+    "limitation": "No captura tendencias ni ciclos.",
+    "interpretation": "Es una referencia para comprobar si un modelo complejo mejora realmente.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de Persistencia?",
+        "options": [
+          "El último valor observado se repite en todos los horizontes.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "El último valor observado se repite en todos los horizontes."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de Persistencia?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Series con cambios difíciles de anticipar; referencia mínima.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Series con cambios difíciles de anticipar; referencia mínima."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de Persistencia?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "No captura tendencias ni ciclos."
+        ],
+        "answer": 2,
+        "explanation": "No captura tendencias ni ciclos."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a Persistencia?",
+        "options": [
+          "El último valor",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "El último valor observado se repite en todos los horizontes. Es una referencia para comprobar si un modelo complejo mejora realmente."
+      },
+      {
+        "text": "¿Cómo debe interpretarse Persistencia en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "Es una referencia para comprobar si un modelo complejo mejora realmente.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "Es una referencia para comprobar si un modelo complejo mejora realmente. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "linear",
+    "title": "Regresión lineal",
+    "concept": "Ajusta una pendiente y un intercepto por mínimos cuadrados.",
+    "formula": "\\hat y_t=\\beta_0+\\beta_1t",
+    "assumptions": "Relación aproximadamente lineal y errores sin estructura sistemática.",
+    "limitation": "Una ruptura de tendencia puede invalidar la extrapolación.",
+    "interpretation": "La pendiente representa el cambio esperado por observación.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de Regresión lineal?",
+        "options": [
+          "Ajusta una pendiente y un intercepto por mínimos cuadrados.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Ajusta una pendiente y un intercepto por mínimos cuadrados."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de Regresión lineal?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Relación aproximadamente lineal y errores sin estructura sistemática.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Relación aproximadamente lineal y errores sin estructura sistemática."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de Regresión lineal?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Una ruptura de tendencia puede invalidar la extrapolación."
+        ],
+        "answer": 2,
+        "explanation": "Una ruptura de tendencia puede invalidar la extrapolación."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a Regresión lineal?",
+        "options": [
+          "Una recta",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Ajusta una pendiente y un intercepto por mínimos cuadrados. La pendiente representa el cambio esperado por observación."
+      },
+      {
+        "text": "¿Cómo debe interpretarse Regresión lineal en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "La pendiente representa el cambio esperado por observación.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "La pendiente representa el cambio esperado por observación. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "polynomial",
+    "title": "Regresión polinómica",
+    "concept": "Añade potencias del tiempo; esta implementación usa grado dos.",
+    "formula": "\\hat y_t=\\beta_0+\\beta_1t+\\beta_2t^2",
+    "assumptions": "Curvatura suave y un horizonte de extrapolación moderado.",
+    "limitation": "Las potencias pueden producir extrapolaciones extremas.",
+    "interpretation": "Reducir el error de entrenamiento no garantiza reducir el error de test.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de Regresión polinómica?",
+        "options": [
+          "Añade potencias del tiempo; esta implementación usa grado dos.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Añade potencias del tiempo; esta implementación usa grado dos."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de Regresión polinómica?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Curvatura suave y un horizonte de extrapolación moderado.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Curvatura suave y un horizonte de extrapolación moderado."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de Regresión polinómica?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Las potencias pueden producir extrapolaciones extremas."
+        ],
+        "answer": 2,
+        "explanation": "Las potencias pueden producir extrapolaciones extremas."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a Regresión polinómica?",
+        "options": [
+          "Una curva cuadrática",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Añade potencias del tiempo; esta implementación usa grado dos. Reducir el error de entrenamiento no garantiza reducir el error de test."
+      },
+      {
+        "text": "¿Cómo debe interpretarse Regresión polinómica en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "Reducir el error de entrenamiento no garantiza reducir el error de test.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "Reducir el error de entrenamiento no garantiza reducir el error de test. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "arima",
+    "title": "ARIMA",
+    "concept": "Combina autorregresión, diferenciación y medias móviles.",
+    "formula": "\\phi(B)(1-B)^d y_t=\\theta(B)\\epsilon_t",
+    "assumptions": "La serie diferenciada debe ser aproximadamente estacionaria.",
+    "limitation": "No incorpora automáticamente estacionalidad explícita.",
+    "interpretation": "En este motor se ajusta ARIMA(1,1,1); no hay búsqueda automática de órdenes.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de ARIMA?",
+        "options": [
+          "Combina autorregresión, diferenciación y medias móviles.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Combina autorregresión, diferenciación y medias móviles."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de ARIMA?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "La serie diferenciada debe ser aproximadamente estacionaria.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "La serie diferenciada debe ser aproximadamente estacionaria."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de ARIMA?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "No incorpora automáticamente estacionalidad explícita."
+        ],
+        "answer": 2,
+        "explanation": "No incorpora automáticamente estacionalidad explícita."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a ARIMA?",
+        "options": [
+          "AR, integración y MA",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Combina autorregresión, diferenciación y medias móviles. En este motor se ajusta ARIMA(1,1,1); no hay búsqueda automática de órdenes."
+      },
+      {
+        "text": "¿Cómo debe interpretarse ARIMA en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "En este motor se ajusta ARIMA(1,1,1); no hay búsqueda automática de órdenes.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "En este motor se ajusta ARIMA(1,1,1); no hay búsqueda automática de órdenes. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "sarima",
+    "title": "SARIMA",
+    "concept": "Extiende ARIMA con términos estacionales de periodo s.",
+    "formula": "\\phi(B)\\Phi(B^s)(1-B)^d(1-B^s)^D y_t=\\theta(B)\\Theta(B^s)\\epsilon_t",
+    "assumptions": "Ciclos repetidos y periodo conocido; este motor exige tres ciclos.",
+    "limitation": "Un periodo incorrecto distorsiona el ajuste y su costo crece con s.",
+    "interpretation": "Se ajusta SARIMA(1,1,1)(1,0,0,s), sin selección automática.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de SARIMA?",
+        "options": [
+          "Extiende ARIMA con términos estacionales de periodo s.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Extiende ARIMA con términos estacionales de periodo s."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de SARIMA?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Ciclos repetidos y periodo conocido; este motor exige tres ciclos.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Ciclos repetidos y periodo conocido; este motor exige tres ciclos."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de SARIMA?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Un periodo incorrecto distorsiona el ajuste y su costo crece con s."
+        ],
+        "answer": 2,
+        "explanation": "Un periodo incorrecto distorsiona el ajuste y su costo crece con s."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a SARIMA?",
+        "options": [
+          "El periodo estacional",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Extiende ARIMA con términos estacionales de periodo s. Se ajusta SARIMA(1,1,1)(1,0,0,s), sin selección automática."
+      },
+      {
+        "text": "¿Cómo debe interpretarse SARIMA en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "Se ajusta SARIMA(1,1,1)(1,0,0,s), sin selección automática.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "Se ajusta SARIMA(1,1,1)(1,0,0,s), sin selección automática. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "garch",
+    "title": "GARCH",
+    "concept": "Modela la varianza condicional de los retornos; no la dirección del precio.",
+    "formula": "\\sigma_t^2=\\omega+\\alpha\\epsilon_{t-1}^2+\\beta\\sigma_{t-1}^2",
+    "assumptions": "Precios positivos y agrupación de volatilidad en retornos.",
+    "limitation": "La volatilidad no determina por sí sola la rentabilidad futura.",
+    "interpretation": "El motor simula precios con media y volatilidad estimadas; su ranking es de precio, no de calidad de volatilidad.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de GARCH?",
+        "options": [
+          "Modela la varianza condicional de los retornos; no la dirección del precio.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Modela la varianza condicional de los retornos; no la dirección del precio."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de GARCH?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Precios positivos y agrupación de volatilidad en retornos.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Precios positivos y agrupación de volatilidad en retornos."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de GARCH?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "La volatilidad no determina por sí sola la rentabilidad futura."
+        ],
+        "answer": 2,
+        "explanation": "La volatilidad no determina por sí sola la rentabilidad futura."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a GARCH?",
+        "options": [
+          "La varianza condicional",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Modela la varianza condicional de los retornos; no la dirección del precio. El motor simula precios con media y volatilidad estimadas; su ranking es de precio, no de calidad de volatilidad."
+      },
+      {
+        "text": "¿Cómo debe interpretarse GARCH en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "El motor simula precios con media y volatilidad estimadas; su ranking es de precio, no de calidad de volatilidad.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "El motor simula precios con media y volatilidad estimadas; su ranking es de precio, no de calidad de volatilidad. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "monte_carlo",
+    "title": "Monte Carlo",
+    "concept": "Genera múltiples trayectorias con choques de retornos logarítmicos.",
+    "formula": "S_{t+h}=S_t\\exp\\left(\\sum_{j=1}^{h}r_j\\right)",
+    "assumptions": "Precios positivos y retornos aproximadamente compatibles con la distribución simulada.",
+    "limitation": "Una distribución normal puede subestimar colas y crisis.",
+    "interpretation": "El motor reporta la mediana y percentiles de 1,000 trayectorias; los percentiles no están calibrados.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de Monte Carlo?",
+        "options": [
+          "Genera múltiples trayectorias con choques de retornos logarítmicos.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Genera múltiples trayectorias con choques de retornos logarítmicos."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de Monte Carlo?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Precios positivos y retornos aproximadamente compatibles con la distribución simulada.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Precios positivos y retornos aproximadamente compatibles con la distribución simulada."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de Monte Carlo?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Una distribución normal puede subestimar colas y crisis."
+        ],
+        "answer": 2,
+        "explanation": "Una distribución normal puede subestimar colas y crisis."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a Monte Carlo?",
+        "options": [
+          "Trayectorias aleatorias",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Genera múltiples trayectorias con choques de retornos logarítmicos. El motor reporta la mediana y percentiles de 1,000 trayectorias; los percentiles no están calibrados."
+      },
+      {
+        "text": "¿Cómo debe interpretarse Monte Carlo en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "El motor reporta la mediana y percentiles de 1,000 trayectorias; los percentiles no están calibrados.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "El motor reporta la mediana y percentiles de 1,000 trayectorias; los percentiles no están calibrados. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "rnn",
+    "title": "RNN",
+    "concept": "Una red recurrente transmite un estado oculto a través de una secuencia.",
+    "formula": "h_t=\\tanh(W_x x_t+W_h h_{t-1}+b)",
+    "assumptions": "Secuencias ordenadas, suficientes datos y escalado con el entrenamiento.",
+    "limitation": "Puede perder gradientes y memoria en secuencias largas.",
+    "interpretation": "Este motor aprende con ventanas de rezagos y pronostica de forma recursiva. La arquitectura, activaciones y optimizador se configuran por método en el laboratorio neuronal.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de RNN?",
+        "options": [
+          "Una red recurrente transmite un estado oculto a través de una secuencia.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Una red recurrente transmite un estado oculto a través de una secuencia."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de RNN?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Secuencias ordenadas, suficientes datos y escalado con el entrenamiento.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Secuencias ordenadas, suficientes datos y escalado con el entrenamiento."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de RNN?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Puede perder gradientes y memoria en secuencias largas."
+        ],
+        "answer": 2,
+        "explanation": "Puede perder gradientes y memoria en secuencias largas."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a RNN?",
+        "options": [
+          "El estado oculto",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Una red recurrente transmite un estado oculto a través de una secuencia. Este motor aprende con ventanas de rezagos y pronostica de forma recursiva."
+      },
+      {
+        "text": "¿Cómo debe interpretarse RNN en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "Este motor aprende con ventanas de rezagos y pronostica de forma recursiva.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "Este motor aprende con ventanas de rezagos y pronostica de forma recursiva. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "cnn",
+    "title": "CNN 1D",
+    "concept": "Aplica filtros temporales para extraer patrones locales de una secuencia.",
+    "formula": "z_t=\\operatorname{ReLU}\\left(\\sum_{k=0}^{K-1}w_kx_{t-k}+b\\right)",
+    "assumptions": "Patrones locales repetidos y ventanas temporales ordenadas.",
+    "limitation": "Los filtros locales no aseguran capturar dependencias de largo plazo.",
+    "interpretation": "La implementación usa Conv1D, agrupación global y una salida densa. La arquitectura, activaciones y optimizador se configuran por método en el laboratorio neuronal.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de CNN 1D?",
+        "options": [
+          "Aplica filtros temporales para extraer patrones locales de una secuencia.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Aplica filtros temporales para extraer patrones locales de una secuencia."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de CNN 1D?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Patrones locales repetidos y ventanas temporales ordenadas.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Patrones locales repetidos y ventanas temporales ordenadas."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de CNN 1D?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Los filtros locales no aseguran capturar dependencias de largo plazo."
+        ],
+        "answer": 2,
+        "explanation": "Los filtros locales no aseguran capturar dependencias de largo plazo."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a CNN 1D?",
+        "options": [
+          "Filtros temporales",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Aplica filtros temporales para extraer patrones locales de una secuencia. La implementación usa Conv1D, agrupación global y una salida densa."
+      },
+      {
+        "text": "¿Cómo debe interpretarse CNN 1D en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "La implementación usa Conv1D, agrupación global y una salida densa.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "La implementación usa Conv1D, agrupación global y una salida densa. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "lstm",
+    "title": "LSTM",
+    "concept": "Usa compuertas para regular una memoria recurrente.",
+    "formula": "c_t=f_t\\odot c_{t-1}+i_t\\odot\\tilde c_t",
+    "assumptions": "Suficientes ejemplos temporales y escalado aprendido solo en entrenamiento.",
+    "limitation": "Necesita más cómputo y puede sobreajustar muestras pequeñas.",
+    "interpretation": "La compuerta de olvido regula cuánta memoria anterior se conserva. La arquitectura, activaciones y optimizador se configuran por método en el laboratorio neuronal.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de LSTM?",
+        "options": [
+          "Usa compuertas para regular una memoria recurrente.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Usa compuertas para regular una memoria recurrente."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de LSTM?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Suficientes ejemplos temporales y escalado aprendido solo en entrenamiento.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Suficientes ejemplos temporales y escalado aprendido solo en entrenamiento."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de LSTM?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Necesita más cómputo y puede sobreajustar muestras pequeñas."
+        ],
+        "answer": 2,
+        "explanation": "Necesita más cómputo y puede sobreajustar muestras pequeñas."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a LSTM?",
+        "options": [
+          "Compuertas y memoria",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Usa compuertas para regular una memoria recurrente. La compuerta de olvido regula cuánta memoria anterior se conserva."
+      },
+      {
+        "text": "¿Cómo debe interpretarse LSTM en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "La compuerta de olvido regula cuánta memoria anterior se conserva.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "La compuerta de olvido regula cuánta memoria anterior se conserva. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "prophet",
+    "title": "Prophet",
+    "concept": "Representa tendencia, estacionalidad y componentes adicionales de forma aditiva.",
+    "formula": "y(t)=g(t)+s(t)+h(t)+\\epsilon_t",
+    "assumptions": "Tendencias y estacionalidad relativamente estables con historial suficiente.",
+    "limitation": "Cambios estructurales imprevistos reducen la precisión.",
+    "interpretation": "Este motor usa tiempo por observación y un ciclo personalizado; no incorpora festivos.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de Prophet?",
+        "options": [
+          "Representa tendencia, estacionalidad y componentes adicionales de forma aditiva.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Representa tendencia, estacionalidad y componentes adicionales de forma aditiva."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de Prophet?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Tendencias y estacionalidad relativamente estables con historial suficiente.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Tendencias y estacionalidad relativamente estables con historial suficiente."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de Prophet?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "Cambios estructurales imprevistos reducen la precisión."
+        ],
+        "answer": 2,
+        "explanation": "Cambios estructurales imprevistos reducen la precisión."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a Prophet?",
+        "options": [
+          "Tendencia y estacionalidad",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Representa tendencia, estacionalidad y componentes adicionales de forma aditiva. Este motor usa tiempo por observación y un ciclo personalizado; no incorpora festivos."
+      },
+      {
+        "text": "¿Cómo debe interpretarse Prophet en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "Este motor usa tiempo por observación y un ciclo personalizado; no incorpora festivos.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "Este motor usa tiempo por observación y un ciclo personalizado; no incorpora festivos. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "qlearning",
+    "title": "Q-Learning",
+    "concept": "Aprende valores de acciones por estado con actualizaciones de Bellman.",
+    "formula": "Q(s,a)\\leftarrow Q(s,a)+\\alpha[r+\\gamma\\max_{a^\\prime}Q(s^\\prime,a^\\prime)-Q(s,a)]",
+    "assumptions": "Estados, acciones y recompensa bien definidos; exploración suficiente.",
+    "limitation": "La política aprendida puede fallar ante un cambio de régimen.",
+    "interpretation": "Aquí la recompensa penaliza el error de dirección normalizada; no mide beneficios de trading.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de Q-Learning?",
+        "options": [
+          "Aprende valores de acciones por estado con actualizaciones de Bellman.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Aprende valores de acciones por estado con actualizaciones de Bellman."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de Q-Learning?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Estados, acciones y recompensa bien definidos; exploración suficiente.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Estados, acciones y recompensa bien definidos; exploración suficiente."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de Q-Learning?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "La política aprendida puede fallar ante un cambio de régimen."
+        ],
+        "answer": 2,
+        "explanation": "La política aprendida puede fallar ante un cambio de régimen."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a Q-Learning?",
+        "options": [
+          "Una tabla estado–acción",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Aprende valores de acciones por estado con actualizaciones de Bellman. Aquí la recompensa penaliza el error de dirección normalizada; no mide beneficios de trading."
+      },
+      {
+        "text": "¿Cómo debe interpretarse Q-Learning en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "Aquí la recompensa penaliza el error de dirección normalizada; no mide beneficios de trading.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "Aquí la recompensa penaliza el error de dirección normalizada; no mide beneficios de trading. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "dqn",
+    "title": "DQN",
+    "concept": "Aproxima Q con una red neuronal, memoria de experiencias y red objetivo.",
+    "formula": "y=r+\\gamma(1-d)\\max_{a^\\prime}Q_{\\mathrm{target}}(s^\\prime,a^\\prime)",
+    "assumptions": "Experiencias suficientes, recompensa coherente y entrenamiento estable.",
+    "limitation": "El aprendizaje puede ser inestable y sensible a hiperparámetros.",
+    "interpretation": "La memoria de experiencias reduce la correlación de las muestras; la red objetivo se sincroniza periódicamente.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de DQN?",
+        "options": [
+          "Aproxima Q con una red neuronal, memoria de experiencias y red objetivo.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Aproxima Q con una red neuronal, memoria de experiencias y red objetivo."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de DQN?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Experiencias suficientes, recompensa coherente y entrenamiento estable.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Experiencias suficientes, recompensa coherente y entrenamiento estable."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de DQN?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "El aprendizaje puede ser inestable y sensible a hiperparámetros."
+        ],
+        "answer": 2,
+        "explanation": "El aprendizaje puede ser inestable y sensible a hiperparámetros."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a DQN?",
+        "options": [
+          "Una red para aproximar Q",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Aproxima Q con una red neuronal, memoria de experiencias y red objetivo. La memoria de experiencias reduce la correlación de las muestras; la red objetivo se sincroniza periódicamente."
+      },
+      {
+        "text": "¿Cómo debe interpretarse DQN en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "La memoria de experiencias reduce la correlación de las muestras; la red objetivo se sincroniza periódicamente.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "La memoria de experiencias reduce la correlación de las muestras; la red objetivo se sincroniza periódicamente. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "anova",
+    "title": "ANOVA",
+    "concept": "Compara medias entre grupos mediante una razón de variación.",
+    "formula": "F=\\frac{MS_{\\mathrm{entre}}}{MS_{\\mathrm{dentro}}}",
+    "assumptions": "Independencia, normalidad aproximada de errores y homogeneidad de varianzas.",
+    "limitation": "La autocorrelación de una serie viola la independencia clásica.",
+    "interpretation": "Un p pequeño sugiere diferencias de medias bajo los supuestos; no identifica qué grupos difieren ni predice el futuro.",
+    "questions": [
+      {
+        "text": "¿Qué describe el mecanismo de ANOVA?",
+        "options": [
+          "Compara medias entre grupos mediante una razón de variación.",
+          "Ordena los datos aleatoriamente antes de evaluarlos.",
+          "Garantiza un pronóstico sin error."
+        ],
+        "answer": 0,
+        "explanation": "Compara medias entre grupos mediante una razón de variación."
+      },
+      {
+        "text": "¿Qué condición favorece el uso de ANOVA?",
+        "options": [
+          "Usar siempre todos los datos para seleccionar y medir el modelo.",
+          "Independencia, normalidad aproximada de errores y homogeneidad de varianzas.",
+          "Ignorar las fechas y los valores faltantes."
+        ],
+        "answer": 1,
+        "explanation": "Independencia, normalidad aproximada de errores y homogeneidad de varianzas."
+      },
+      {
+        "text": "¿Cuál es una limitación concreta de ANOVA?",
+        "options": [
+          "Nunca requiere datos.",
+          "Siempre supera a persistencia.",
+          "La autocorrelación de una serie viola la independencia clásica."
+        ],
+        "answer": 2,
+        "explanation": "La autocorrelación de una serie viola la independencia clásica."
+      },
+      {
+        "text": "¿Qué objeto caracteriza a ANOVA?",
+        "options": [
+          "Diferencias entre medias",
+          "Un certificado de rentabilidad.",
+          "La eliminación automática de toda incertidumbre."
+        ],
+        "answer": 0,
+        "explanation": "Compara medias entre grupos mediante una razón de variación. Un p pequeño sugiere diferencias de medias bajo los supuestos; no identifica qué grupos difieren ni predice el futuro."
+      },
+      {
+        "text": "¿Cómo debe interpretarse ANOVA en este laboratorio?",
+        "options": [
+          "El ajuste dentro de muestra certifica su desempeño futuro.",
+          "Un p pequeño sugiere diferencias de medias bajo los supuestos; no identifica qué grupos difieren ni predice el futuro.",
+          "El test final puede reutilizarse indefinidamente para elegir parámetros."
+        ],
+        "answer": 1,
+        "explanation": "Un p pequeño sugiere diferencias de medias bajo los supuestos; no identifica qué grupos difieren ni predice el futuro. La evaluación temporal debe respetar el orden de observaciones."
+      }
+    ]
+  },
+  {
+    "key": "gan",
+    "title": "GAN condicional",
+    "concept": "Un generador recibe contexto temporal y ruido para producir el siguiente valor; un discriminador recibe contexto y valor para distinguir ejemplos reales de generados.",
+    "formula": "\\min_G\\max_D\\;\\mathbb{E}[\\log D(c,y)]+\\mathbb{E}[\\log(1-D(c,G(c,z)))]",
+    "assumptions": "Suficientes ventanas temporales, características causales y escalado aprendido dentro del entrenamiento. Generador y discriminador alternan actualizaciones.",
+    "limitation": "El entrenamiento puede ser inestable o sufrir colapso de modos. Los percentiles generados no garantizan cobertura futura.",
+    "interpretation": "El laboratorio implementa cGAN con capas Dense configurables, salida lineal de G, salida sigmoide de D, BCE adversarial y reconstrucción L1 ponderada. No implementa TimeGAN.",
+    "questions": [
+      {
+        "text": "¿Qué recibe el generador de este GAN?",
+        "options": [
+          "Contexto temporal y ruido latente.",
+          "El valor futuro real durante la evaluación.",
+          "Solo la fecha final."
+        ],
+        "answer": 0,
+        "explanation": "El generador combina características del pasado con un vector aleatorio; nunca recibe el objetivo futuro en inferencia."
+      },
+      {
+        "text": "¿Qué activación tiene la salida del discriminador?",
+        "options": [
+          "Lineal sin interpretación probabilística.",
+          "Sigmoide para clasificar real frente a generado.",
+          "Una compuerta LSTM."
+        ],
+        "answer": 1,
+        "explanation": "El discriminador devuelve una probabilidad y se entrena con entropía cruzada binaria."
+      },
+      {
+        "text": "¿Qué salida se usa en el generador?",
+        "options": [
+          "Una clase fija.",
+          "Una garantía de rentabilidad.",
+          "Una neurona lineal para pronosticar un valor numérico."
+        ],
+        "answer": 2,
+        "explanation": "La salida lineal permite representar valores continuos en la escala normalizada del objetivo."
+      },
+      {
+        "text": "¿Qué significa colapso de modos?",
+        "options": [
+          "El generador produce poca diversidad a pesar de cambiar el ruido.",
+          "El discriminador usa más de una capa.",
+          "El RSI alcanza 50."
+        ],
+        "answer": 0,
+        "explanation": "Un GAN puede ignorar parte del ruido y concentrar sus muestras en una región pequeña de resultados."
+      },
+      {
+        "text": "¿Cómo interpretar los percentiles de este GAN?",
+        "options": [
+          "Como cobertura del 95% certificada para cualquier horizonte.",
+          "Como dispersión generativa condicional sin calibración.",
+          "Como métricas calculadas con futuros ya conocidos."
+        ],
+        "answer": 1,
+        "explanation": "Los pasos futuros usan contexto actualizado con medias predichas. La cobertura requeriría un estudio de calibración externo."
+      }
+    ]
+  },
+  {
+    "key": "mlp",
+    "title": "MLP feedforward",
+    "formula": "\\hat y=W_2\\,\\operatorname{ReLU}(W_1x+b_1)+b_2",
+    "concept": "Una MLP combina capas densas y activaciones no lineales.",
+    "assumptions": "Indicadores conocidos al cierre y etiquetas futuras separadas por fecha.",
+    "limitation": "Una red más ancha puede sobreajustar y no superar a Ridge.",
+    "interpretation": "Regresión utiliza salida lineal y MSE; clasificación utiliza logits, BCE estable y sigmoid al evaluar.",
+    "questions": [
+      {
+        "text": "¿Cuál es el objetivo de regresión U2?",
+        "options": [
+          "El intradía de la sesión siguiente en bps log.",
+          "El cierre de hoy usado también como entrada.",
+          "La posición del agente RL."
+        ],
+        "answer": 0,
+        "explanation": "Se predice 10,000·log(Close(t+1)/Open(t+1)) con señal al cierre t."
+      },
+      {
+        "text": "¿Qué pérdida corresponde a dirección?",
+        "options": [
+          "MSE de precios en bruto.",
+          "BCE con logits.",
+          "KL sin reconstrucción."
+        ],
+        "answer": 1,
+        "explanation": "El modelo emite logits; sigmoid convierte esos logits en probabilidades para evaluar."
+      },
+      {
+        "text": "¿Dónde se ajustan las escalas?",
+        "options": [
+          "En train, validación y test juntos.",
+          "Solo en test.",
+          "Únicamente en train."
+        ],
+        "answer": 2,
+        "explanation": "La transformación aprendida se aplica después a validación y test sin volver a ajustarla."
+      },
+      {
+        "text": "¿Qué checkpoint se restaura?",
+        "options": [
+          "El de menor pérdida de validación.",
+          "El de mayor beneficio de test.",
+          "Siempre la última época."
+        ],
+        "answer": 0,
+        "explanation": "El test se conserva fuera de la selección de pesos."
+      },
+      {
+        "text": "¿Por qué comparar con Ridge?",
+        "options": [
+          "Porque garantiza ganancias.",
+          "Para medir si la complejidad neuronal aporta mejora.",
+          "Para reemplazar cualquier red antes de entrenarla."
+        ],
+        "answer": 1,
+        "explanation": "La referencia mantiene sus métricas aunque una red no logre superarla."
+      }
+    ]
+  },
+  {
+    "key": "gru",
+    "title": "GRU",
+    "formula": "h_t=(1-z_t)\\odot\\tilde h_t+z_t\\odot h_{t-1}",
+    "concept": "Una GRU utiliza compuertas de actualización y reinicio para procesar secuencias.",
+    "assumptions": "Cada ventana contiene exclusivamente historia disponible y comienza con estado nuevo.",
+    "limitation": "La bidireccionalidad no permite incorporar observaciones posteriores a la señal.",
+    "interpretation": "U7 compara GRU, LSTM y versiones bidireccionales con la misma ventana.",
+    "questions": [
+      {
+        "text": "¿Qué caracteriza a GRU?",
+        "options": [
+          "Compuertas de actualización y reinicio.",
+          "Una tabla Q sin red.",
+          "Dos redes adversarias."
+        ],
+        "answer": 0,
+        "explanation": "GRU es una alternativa recurrente a LSTM con una estructura de memoria distinta."
+      },
+      {
+        "text": "¿Qué recibe la red en U7?",
+        "options": [
+          "Solo fechas de test.",
+          "Una secuencia de indicadores históricos.",
+          "Retornos futuros conocidos."
+        ],
+        "answer": 1,
+        "explanation": "El preset usa veinte sesiones; la longitud es configurable."
+      },
+      {
+        "text": "¿Qué significa bidireccional histórica?",
+        "options": [
+          "Usar mañana al pronosticar hoy.",
+          "Mezclar train y test.",
+          "Recorrer ambos sentidos de la ventana ya observada."
+        ],
+        "answer": 2,
+        "explanation": "Se concatenan los resúmenes de ambos sentidos dentro del contexto permitido."
+      },
+      {
+        "text": "¿Se arrastra memoria entre ventanas?",
+        "options": [
+          "No, cada ventana reinicia su estado.",
+          "Sí, también desde test a train.",
+          "Solo si el RMSE es bajo."
+        ],
+        "answer": 0,
+        "explanation": "Se utiliza stateful=False para mantener separadas las muestras."
+      },
+      {
+        "text": "¿Cómo se mide el retorno predicho?",
+        "options": [
+          "En la escala normalizada sin convertir.",
+          "Desescalando a bps antes de calcular el error.",
+          "Con la pérdida del discriminador."
+        ],
+        "answer": 1,
+        "explanation": "Las métricas en bps permiten comparar con la referencia Ridge."
+      }
+    ]
+  },
+  {
+    "key": "pca",
+    "title": "PCA",
+    "formula": "Z=XW_k,\\qquad\\hat X=ZW_k^\\top",
+    "concept": "PCA obtiene factores lineales que concentran variación de las entradas.",
+    "assumptions": "Las entradas comparables se estandarizan utilizando únicamente train.",
+    "limitation": "Mayor varianza explicada no implica mayor utilidad predictiva.",
+    "interpretation": "U8 compara PCA con AE y DAE con la misma dimensión latente.",
+    "questions": [
+      {
+        "text": "¿Qué tipo de compresión hace PCA?",
+        "options": [
+          "Lineal.",
+          "Adversaria.",
+          "Una política de posiciones."
+        ],
+        "answer": 0,
+        "explanation": "PCA proyecta sobre componentes principales aprendidos de train."
+      },
+      {
+        "text": "¿Qué controla n_components?",
+        "options": [
+          "El coste de trading.",
+          "La dimensión latente.",
+          "La fecha del test."
+        ],
+        "answer": 1,
+        "explanation": "El preset conserva tres componentes, pero se puede editar."
+      },
+      {
+        "text": "¿Dónde se ajusta PCA?",
+        "options": [
+          "En el test final.",
+          "En datos de todos los años.",
+          "Solo en entradas de train."
+        ],
+        "answer": 2,
+        "explanation": "La transformación de validación y test usa la misma base aprendida."
+      },
+      {
+        "text": "¿Qué permite medir reconstrucción?",
+        "options": [
+          "El error entre indicadores originales y recuperados.",
+          "La ganancia garantizada.",
+          "La exactitud de un valor Q."
+        ],
+        "answer": 0,
+        "explanation": "La reconstrucción se mide en la escala de los indicadores estandarizados."
+      },
+      {
+        "text": "¿Qué evalúa Ridge posterior?",
+        "options": [
+          "El número de imágenes cargadas.",
+          "La utilidad predictiva de los factores.",
+          "El tamaño de un kernel CNN."
+        ],
+        "answer": 1,
+        "explanation": "Reconstrucción y predicción son tareas distintas y se reportan separadamente."
+      }
+    ]
+  },
+  {
+    "key": "ae",
+    "title": "Autoencoder",
+    "formula": "z=f_\\theta(x),\\quad\\hat x=g_\\phi(z),\\quad L=\\|x-\\hat x\\|^2",
+    "concept": "Un autoencoder aprende un encoder y un decoder para reconstruir las entradas.",
+    "assumptions": "Bottleneck y capacidad deben ser adecuados al número de indicadores.",
+    "limitation": "Buena reconstrucción no garantiza que los factores anticipen retornos.",
+    "interpretation": "U8 selecciona por MSE de reconstrucción en validación y evalúa Ridge sobre los factores.",
+    "questions": [
+      {
+        "text": "¿Qué hace el encoder?",
+        "options": [
+          "Convierte indicadores en factores latentes.",
+          "Decide posiciones de trading.",
+          "Crea etiquetas con el test."
+        ],
+        "answer": 0,
+        "explanation": "El encoder comprime la información de entrada en una representación de menor dimensión."
+      },
+      {
+        "text": "¿Qué devuelve el decoder?",
+        "options": [
+          "Una acción corta.",
+          "Una reconstrucción de los indicadores.",
+          "El valor p de ANOVA."
+        ],
+        "answer": 1,
+        "explanation": "El decoder recupera el espacio de entrada desde la representación latente."
+      },
+      {
+        "text": "¿Cuál es el objetivo de AE?",
+        "options": [
+          "El futuro de test usado como entrada.",
+          "El ruido generado al azar.",
+          "La propia entrada limpia."
+        ],
+        "answer": 2,
+        "explanation": "Se entrena para minimizar el error de reconstrucción."
+      },
+      {
+        "text": "¿Qué elige la mejor variante U8?",
+        "options": [
+          "El menor MSE de reconstrucción de validación.",
+          "El mayor retorno de test.",
+          "La mayor cantidad de parámetros."
+        ],
+        "answer": 0,
+        "explanation": "La tarea de selección de AE se conserva separada de la evaluación predictiva."
+      },
+      {
+        "text": "¿Dónde se entrena Ridge posterior?",
+        "options": [
+          "Sobre factores de test.",
+          "Sobre factores de train y sus etiquetas de train.",
+          "Sobre las pérdidas del generador."
+        ],
+        "answer": 1,
+        "explanation": "Así se evalúa la utilidad de los factores sin introducir etiquetas de test en el ajuste."
+      }
+    ]
+  },
+  {
+    "key": "dae",
+    "title": "Denoising Autoencoder",
+    "formula": "L=\\|x-g_\\phi(f_\\theta(x+\\sigma\\epsilon))\\|^2",
+    "concept": "DAE aprende a reconstruir una entrada limpia a partir de una versión contaminada.",
+    "assumptions": "El ruido se añade solo durante entrenamiento y su escala corresponde a entradas estandarizadas.",
+    "limitation": "Demasiado ruido puede borrar información útil y empeorar la reconstrucción.",
+    "interpretation": "AE y DAE comparten arquitectura; cambia el tratamiento de la entrada de entrenamiento.",
+    "questions": [
+      {
+        "text": "¿Qué entrada recibe DAE durante train?",
+        "options": [
+          "La entrada más ruido gaussiano.",
+          "El objetivo futuro real.",
+          "Solo una posición RL."
+        ],
+        "answer": 0,
+        "explanation": "El preset usa ruido con desviación .1 en la escala normalizada."
+      },
+      {
+        "text": "¿Cuál es su objetivo?",
+        "options": [
+          "La entrada ruidosa.",
+          "La entrada limpia.",
+          "El periodo de la EMA."
+        ],
+        "answer": 1,
+        "explanation": "El objetivo limpio enseña a recuperar información bajo contaminación."
+      },
+      {
+        "text": "¿Se añade ruido al evaluar?",
+        "options": [
+          "Siempre.",
+          "Solo al test que tenga pérdidas altas.",
+          "No; la evaluación usa entradas limpias."
+        ],
+        "answer": 2,
+        "explanation": "GaussianNoise se desactiva con training=False."
+      },
+      {
+        "text": "¿Cómo se compara con AE?",
+        "options": [
+          "Misma dimensión latente y criterios de reconstrucción.",
+          "Comparando únicamente rentabilidad test.",
+          "Sin estandarizar entradas."
+        ],
+        "answer": 0,
+        "explanation": "El laboratorio mantiene explícitas las diferencias de tratamiento del ruido."
+      },
+      {
+        "text": "¿Qué indica una mejor reconstrucción?",
+        "options": [
+          "Que existe cobertura de colas.",
+          "Menor error en la tarea de reconstrucción, no necesariamente mejor predicción.",
+          "Que Ridge deja de ser necesario como referencia."
+        ],
+        "answer": 1,
+        "explanation": "La utilidad predictiva se mide con una regresión posterior separada."
+      }
+    ]
+  },
+  {
+    "key": "cvae",
+    "title": "VAE condicional",
+    "formula": "z=\\mu+\\exp(\\tfrac12\\log\\sigma^2)\\epsilon,\\quad L=L_{rec}+\\beta D_{KL}",
+    "concept": "CVAE aprende una distribución latente y genera ventanas condicionadas por volatilidad previa.",
+    "assumptions": "Retornos y condición se escalan con train y las ventanas completas respetan los cortes.",
+    "limitation": "Un beta pequeño puede reconstruir bien sin lograr muestras útiles del prior.",
+    "interpretation": "U9 limita log-varianza a [-8,8] y selecciona con ruido fijo de validación.",
+    "questions": [
+      {
+        "text": "¿Qué condiciona a los escenarios U9?",
+        "options": [
+          "Log-volatilidad de sesiones anteriores.",
+          "El retorno de la ventana futura ya conocido.",
+          "El ganador del test."
+        ],
+        "answer": 0,
+        "explanation": "La condición se calcula antes del inicio de cada ventana."
+      },
+      {
+        "text": "¿Qué permite reparametrizar?",
+        "options": [
+          "Convertir todos los valores Q en probabilidades.",
+          "Separar el ruido aleatorio de parámetros aprendidos para propagar gradientes.",
+          "Usar test como entrenamiento."
+        ],
+        "answer": 1,
+        "explanation": "Se construye z=mu+sigma·epsilon con epsilon normal estándar."
+      },
+      {
+        "text": "¿Qué combina su pérdida?",
+        "options": [
+          "Solo el retorno neto.",
+          "La pérdida de un discriminador.",
+          "Reconstrucción MSE y divergencia KL ponderada."
+        ],
+        "answer": 2,
+        "explanation": "Beta controla la contribución de KL a la pérdida del CVAE."
+      },
+      {
+        "text": "¿Qué ventanas se eliminan?",
+        "options": [
+          "Las que cruzan un corte entre particiones.",
+          "Todas las de volatilidad alta.",
+          "Solo las que reconstruye bien."
+        ],
+        "answer": 0,
+        "explanation": "Ninguna ventana generativa comparte sus retornos objetivo entre train y validación/test."
+      },
+      {
+        "text": "¿Cómo se comparan épocas?",
+        "options": [
+          "Con ruido nuevo y el mejor resultado de test.",
+          "Con ruido fijo en validación y sin usar test.",
+          "Con la mayor cantidad de neuronas."
+        ],
+        "answer": 1,
+        "explanation": "La misma fuente de ruido reduce variación de la comparación entre checkpoints."
+      }
+    ]
+  },
+  {
+    "key": "ddqn",
+    "title": "Double DQN",
+    "formula": "y=r+\\gamma(1-d)Q_{target}(s^\\prime,\\arg\\max_a Q_{online}(s^\\prime,a))",
+    "concept": "Double DQN separa selección y evaluación de la acción siguiente entre online y target.",
+    "assumptions": "Estados causales, replay exclusivo de train y costes coherentes con la ejecución.",
+    "limitation": "Un buen retorno de entrenamiento no demuestra rentabilidad futura.",
+    "interpretation": "U10 incluye posición en el estado, gap con posición previa, intradía con nueva posición y test greedy.",
+    "questions": [
+      {
+        "text": "¿Quién elige la acción del objetivo?",
+        "options": [
+          "La red online.",
+          "La red target mediante su propio máximo.",
+          "El dataset de test."
+        ],
+        "answer": 0,
+        "explanation": "La red target evalúa la acción que eligió online; esa es la distinción Double DQN."
+      },
+      {
+        "text": "¿Qué ocurre si done=1?",
+        "options": [
+          "Se duplica el valor futuro.",
+          "Se elimina el término futuro del objetivo.",
+          "Se omite la recompensa."
+        ],
+        "answer": 1,
+        "explanation": "La máscara terminal conserva solo la recompensa inmediata."
+      },
+      {
+        "text": "¿Qué entra al replay?",
+        "options": [
+          "Validación y test para mejorar métricas.",
+          "Solo acciones ganadoras.",
+          "Transiciones de train."
+        ],
+        "answer": 2,
+        "explanation": "La validación y el test se ejecutan sin aprender ni modificar el replay."
+      },
+      {
+        "text": "¿Quién participa en el gap?",
+        "options": [
+          "La posición anterior.",
+          "La posición que se abrirá después del gap.",
+          "Siempre efectivo aunque ya exista posición."
+        ],
+        "answer": 0,
+        "explanation": "La nueva posición se ejecuta en la apertura siguiente y participa en el intradía."
+      },
+      {
+        "text": "¿Qué representan las tres salidas?",
+        "options": [
+          "Probabilidades que suman uno.",
+          "Valores Q para corto, efectivo y largo.",
+          "Tres precios futuros."
+        ],
+        "answer": 1,
+        "explanation": "La salida es lineal; las acciones corresponden a posiciones −1/0/+1."
+      }
+    ]
+  },
+  {
+    "key": "regularization",
+    "title": "Regularización",
+    "formula": "L=L_{datos}+\\lambda_1\\|W\\|_1+\\lambda_2\\|W\\|_2^2",
+    "concept": "La regularización controla complejidad y estabilidad del aprendizaje.",
+    "assumptions": "Las variantes deben compartir datos, arquitectura e inicialización comparables.",
+    "limitation": "No garantiza mejorar cualquier conjunto de datos y sus coeficientes requieren validación.",
+    "interpretation": "U4 compara BCE de datos, excluyendo penalizaciones de la métrica de selección.",
+    "questions": [
+      {
+        "text": "¿Cuándo actúa Dropout?",
+        "options": [
+          "Durante train.",
+          "También como ruido obligatorio de test.",
+          "Antes de descargar datos."
+        ],
+        "answer": 0,
+        "explanation": "Se desactiva en evaluación para medir una predicción determinista de la red."
+      },
+      {
+        "text": "¿Qué penaliza L1?",
+        "options": [
+          "La fecha de señal.",
+          "La magnitud absoluta de los kernels.",
+          "El número de filas de test."
+        ],
+        "answer": 1,
+        "explanation": "L1 añade una penalización basada en la suma de valores absolutos."
+      },
+      {
+        "text": "¿Qué pérdidas se comparan entre variantes?",
+        "options": [
+          "Pérdidas que sumen cualquier penalización distinta.",
+          "Solo recompensa de train.",
+          "BCE de datos sin penalizaciones."
+        ],
+        "answer": 2,
+        "explanation": "Así el criterio de validación mantiene el mismo significado entre variantes."
+      },
+      {
+        "text": "¿Qué hace Early Stopping?",
+        "options": [
+          "Detiene por paciencia y restaura el mejor checkpoint de validación.",
+          "Elige el mejor año del test.",
+          "Evita entrenar."
+        ],
+        "answer": 0,
+        "explanation": "El test no participa en la decisión de parada o restauración."
+      },
+      {
+        "text": "¿Son idénticos L2 y weight decay desacoplado?",
+        "options": [
+          "Siempre y para todo optimizador.",
+          "No; son controles distintos y se documentan por separado.",
+          "Solo cuando el test es positivo."
+        ],
+        "answer": 1,
+        "explanation": "La forma de aplicar la penalización importa, especialmente con optimizadores adaptativos."
+      }
+    ]
+  },
+  {
+    "key": "hpo",
+    "title": "Hiperparámetros temporales",
+    "formula": "cfg^*=\\arg\\min_{cfg}\\;\\frac1K\\sum_{k=1}^{K}\\operatorname{RMSE}_k(cfg)",
+    "concept": "La búsqueda explora configuraciones en folds cronológicos internos de train.",
+    "assumptions": "Cada fold necesita suficientes datos y sus propios escaladores y pesos nuevos.",
+    "limitation": "Elegir parámetros mirando test produce una evaluación optimista.",
+    "interpretation": "U5 muestrea learning rate en escala logarítmica y exporta trials, folds y RMSE medio en bps.",
+    "questions": [
+      {
+        "text": "¿Dónde quedan los folds internos?",
+        "options": [
+          "Dentro de train, antes de validación externa.",
+          "Dentro del test final.",
+          "En cualquier año elegido después de ver el test."
+        ],
+        "answer": 0,
+        "explanation": "La búsqueda no utiliza los datos de validación externa o test como folds internos."
+      },
+      {
+        "text": "¿Qué se reajusta por fold?",
+        "options": [
+          "Las etiquetas reales de test.",
+          "Escaladores y pesos de una red nueva.",
+          "El coste observado para ocultar pérdidas."
+        ],
+        "answer": 1,
+        "explanation": "Cada fold aprende únicamente de su propio pasado disponible."
+      },
+      {
+        "text": "¿Cómo se muestrea la tasa de aprendizaje?",
+        "options": [
+          "Siempre en escala de precios.",
+          "Usando el mayor retorno test.",
+          "Log-uniforme entre límites configurables."
+        ],
+        "answer": 2,
+        "explanation": "Se exploran órdenes de magnitud como 10^-4 a 10^-2.5."
+      },
+      {
+        "text": "¿Qué criterio agrega los folds?",
+        "options": [
+          "La media de RMSE desescalado en bps.",
+          "El menor error aislado de cualquier fold.",
+          "La cantidad de parámetros."
+        ],
+        "answer": 0,
+        "explanation": "La media evalúa cada configuración a través de varios periodos."
+      },
+      {
+        "text": "¿Para qué se usa validación externa después?",
+        "options": [
+          "Para reabrir la búsqueda usando test.",
+          "Para seleccionar checkpoint del ajuste final del mejor trial.",
+          "Para entrenar PCA con datos futuros."
+        ],
+        "answer": 1,
+        "explanation": "El mejor trial se ajusta sobre train completo y el test sigue reservado."
+      }
+    ]
+  }
+]
