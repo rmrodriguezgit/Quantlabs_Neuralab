@@ -89,3 +89,7 @@ Build aprobado y prueba Electron `node tests/smoke-brand.cjs` aprobada: nombre, 
 ## Infografía complementaria 1.5.1
 
 Build aprobado y `npm run smoke:infographics` aprobado: ambas láminas de Unidad 9 se decodifican en Electron y sus hashes coinciden con el manifiesto. La imagen original no se modificó. Revisión visual de la nueva lámina realizada antes de integrarla.
+
+## Perfiles 1.6.0
+
+90 pruebas Python aprobadas en 67 s, incluidas comprobaciones de todos los perfiles contra el preflight real y conservación de metadatos de red. `npm run test:profiles` aprobado: 14 perfiles de unidades, cinco redes y 24 búsquedas. Build aprobado. Prueba Electron de perfiles aprobada: aplicación, edición libre, recuperación, persistencia y navegación entre unidades.

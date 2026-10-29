@@ -1,7 +1,9 @@
+import type {ConfigurationProfile} from './configurationProfiles';
 import {Architecture,TrainingSummary} from './types';
 import {architecture,layer} from './networks';
 import {FINANCIAL_FEATURES} from './infographics';
 export interface UnitConfig {
+ configurationProfile?:ConfigurationProfile;
  scenarioAsset:string;conditionFeatures:string[];conditionEmbeddingDim:number;conditionFusion:'concat'|'multiply';ganUpsampling:'transpose'|'upsample';ganNegativeSlope:number;ganLeaky:boolean;ganBatchNorm:boolean;temporalWeight:number;scenarioRegime:'observed'|'bear'|'neutral'|'bull';trainStart:string;testEnd:string;validationStart:string;testStart:string;seed:number;epochs:number;batchSize:number;lookback:number;patience:number;earlyStopping:boolean;minDelta:number;warmupEpochs:number;timeoutMinutes:number;includeEarlyStopping:boolean;task:'regression'|'classification';selectedFeatures:string[];featurePeriods:Record<string,number>;architecture:Architecture;encoder:Architecture;decoder:Architecture;generator:Architecture;discriminator:Architecture;projectInput:boolean;ridgeAlpha:number;costBps:number;l1:number;l2:number;weightDecay:number;dropout:number;gradientClip:number;optimizerRates:Record<string,number>;trials:number;widths:number[];depths:number[];weightDecays:number[];foldYears:number[];lrLogMin:number;lrLogMax:number;recurrentModels:string[];cnnPadding:'valid'|'same'|'causal';latentDim:number;noiseStd:number;beta:number;horizon:number;conditionPeriod:number;scenarioCount:number;generativeModels:string[];episodes:number;replayCapacity:number;replayBatch:number;replayWarmup:number;trainEvery:number;targetSync:number;gamma:number;epsilonStart:number;epsilonEnd:number;epsilonDecay:number;qAlpha:number;liquidateEnd:boolean;
 }
 function arch(width=32,activation='relu'):Architecture{return {...architecture(activation),inputUnits:width,inputActivation:activation,layers:[{...layer(activation),units:width}]}}

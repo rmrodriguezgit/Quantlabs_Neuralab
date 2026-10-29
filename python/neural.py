@@ -40,6 +40,7 @@ def network_config(name,options=None):
     raw=networks.get(name,{})
     if not isinstance(raw,dict):raise ValueError('Configuración de red inválida.')
     cfg={**architecture(raw,name),'lookback':bounded_int(raw.get('lookback',8),2,120,'Ventana de entrada'),'epochs':bounded_int(raw.get('epochs',options.get('epochs',100)),1,MAX_EPOCHS,'Épocas'),'batchSize':bounded_int(raw.get('batchSize',32),8,256,'Tamaño de lote'),'features':normalize_features(raw.get('features')),**settings(raw),'validationFraction':real(raw.get('validationFraction',.2),.1,.4,'Fracción de validación interna')}
+    if isinstance(raw.get('configurationProfile'),dict):cfg['configurationProfile']=raw['configurationProfile']
     if name=='gan':cfg.update(discriminator=architecture(raw.get('discriminator'),'dense'),latentDim=bounded_int(raw.get('latentDim',8),1,64,'Dimensión latente'),draws=bounded_int(raw.get('draws',32),8,256,'Escenarios por paso'),reconstructionWeight=real(raw.get('reconstructionWeight',10),0,100,'Peso de reconstrucción'))
     return cfg
 

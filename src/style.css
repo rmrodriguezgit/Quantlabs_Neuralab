@@ -9,3 +9,5 @@
 .field-help{display:block;font-weight:400;line-height:1.5;color:#52657a;margin:6px 0 12px;font-size:12px}.preview-ready{color:#176a46;font-weight:600}input[aria-invalid=true]{border-color:#b42318} [id$="-goal"],[id$="-data"],[id$="-config"],[id$="-review"]{scroll-margin-top:24px}
 
 .brand-icon{width:46px;height:46px;flex-shrink:0}.brand .app-version{display:block;font-size:10px;font-weight:400;letter-spacing:.4px;color:#a9c5d3;margin-top:7px}.brand>div{font-size:15px}.brand>div>span{letter-spacing:1.5px}
+
+.configuration-profiles{padding:18px;border:1px solid #b8d4d0;background:#f2f9f7;border-radius:10px;margin:16px 0}.configuration-profiles .section-top{flex-wrap:wrap;gap:12px}.configuration-profiles .studio-actions{flex-wrap:wrap}.profile-recommended,.profile-free{font-size:12px;padding:8px 12px;border-radius:20px;line-height:1.5}.profile-recommended{background:#d4ede3;color:#116047}.profile-free{background:#e8eef5;color:#26455e}

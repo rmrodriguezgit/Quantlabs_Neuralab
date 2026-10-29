@@ -1,3 +1,4 @@
+import type {ConfigurationProfile} from './configurationProfiles';
 export type Frequency='daily'|'business'|'monthly'|'annual'|'hourly'|'15min';
 export interface Dataset {id:string;name:string;kind:'business'|'financial';frequency:Frequency;columns:string[];rows:({date:string}&Record<string,string|number>)[]}
 export interface Metrics {mse:number;rmse:number;mae:number;r2:number|null}
@@ -14,7 +15,7 @@ export type NetworkName='rnn'|'cnn'|'lstm'|'dqn'|'gan';
 export interface LayerConfig {units:number;activation:string;recurrentActivation:string;dropout:number;kernelSize:number;stride?:number;batchNorm?:boolean}
 export interface Architecture {inputUnits:number;inputActivation:string;layers:LayerConfig[];optimizer:string;learningRate:number}
 export interface FeatureConfig {lags:number[];ema:number[];sma:number[];rsi:boolean;rsiPeriod:number;macd:boolean;macdFast:number;macdSlow:number;macdSignal:number;returns:boolean;volatility:boolean;volatilityPeriod:number}
-export interface NetworkConfig extends Architecture {earlyStopping:boolean;patience:number;minDelta:number;warmupEpochs:number;validationFraction:number;lookback:number;epochs:number;batchSize:number;features:FeatureConfig;discriminator:Architecture;latentDim:number;draws:number;reconstructionWeight:number}
+export interface NetworkConfig extends Architecture {configurationProfile?:ConfigurationProfile;earlyStopping:boolean;patience:number;minDelta:number;warmupEpochs:number;validationFraction:number;lookback:number;epochs:number;batchSize:number;features:FeatureConfig;discriminator:Architecture;latentDim:number;draws:number;reconstructionWeight:number}
 export type NetworkConfigs=Record<NetworkName,NetworkConfig>;
 export interface NetworkMetadata {config:NetworkConfig;inputShape:number[];outputShape:number[];features:string[];trainingSamples:number;validationSamples?:number;trainingEndIndex?:number;warmup:number;parameters:number;layers:{name:string;type:string;units:number|null;activation:string|null}[];discriminator?:NetworkMetadata}
 
