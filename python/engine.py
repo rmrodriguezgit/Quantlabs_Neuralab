@@ -176,6 +176,9 @@ def capabilities():
 
 def dispatch(req):
     action=req.get('action')
+    if action=='preview_experiment':
+        from experiment_preview import preview
+        return preview(req)
     if action=='bundle_artifacts':
         from model_exports import bundle_artifacts
         return bundle_artifacts(req['artifactRoot'],req['ids'],req.get('report'))

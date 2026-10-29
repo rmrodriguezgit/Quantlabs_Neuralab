@@ -69,3 +69,7 @@ No se certifica rentabilidad ni precisión general de modelos. La evaluación de
 TensorFlow puede advertir sobre retracing durante las pruebas que construyen numerosas arquitecturas distintas. Las pruebas concluyen correctamente.
 
 Vite advierte que el bundle principal supera 500 kB; la compilación concluye correctamente. Prophet advierte que Plotly no está instalado; sus predicciones funcionan y la aplicación usa Recharts, por lo que no depende de los gráficos de Prophet.
+
+## Reingeniería 1.4
+
+78 pruebas Python aprobadas (61 s), incluidas once nuevas del endpoint de comprobación previa. Build aprobado. Pruebas Electron de guía y emulador aprobadas: la ejecución requiere una revisión vigente, y las entradas inválidas o cambios posteriores la bloquean. Véase [recorrido guiado](REINGENIERIA_USO.md).

@@ -1,8 +1,10 @@
-# Quantlabs Neuralab · Forecast Lab 1.3
+# Quantlabs Neuralab · Forecast Lab 1.4
 
 Aplicación de escritorio para explorar series empresariales y financieras, generar escenarios, comparar pronósticos y estudiar los métodos. Interfaz en español, Electron + React/TypeScript y motor Python mediante JSON por entrada/salida estándar.
 
-**Nuevo 1.3:** [Banco de variantes, Early Stopping y exportación para inferencia](docs/VARIANTES_Y_EXPORTACION.md). Hasta 5,000 épocas, techo 1,500 con parada opcional, comparación por familia y descargas JSON/ZIP con arquitectura, pesos, escalas y script paper.
+**Nuevo 1.4:** [Configuración guiada y revisión previa](docs/REINGENIERIA_USO.md): cuatro pasos, ayuda contextual, prueba rápida y comprobación de datos antes de entrenar.
+
+**Versión 1.3:** [Banco de variantes, Early Stopping y exportación para inferencia](docs/VARIANTES_Y_EXPORTACION.md). Hasta 5,000 épocas, techo 1,500 con parada opcional, comparación por familia y descargas JSON/ZIP con arquitectura, pesos, escalas y script paper.
 
 **Taller 1.2:** [análisis de las nueve infografías y taller U2–U10](docs/ANALISIS_INFOGRAFIAS.md). Incluye MLP, comparación de optimizadores, regularización, HPO temporal, CNN, LSTM/GRU bidireccionales, PCA/AE/DAE, CVAE/cGAN de ventanas y Double DQN con costes.
 

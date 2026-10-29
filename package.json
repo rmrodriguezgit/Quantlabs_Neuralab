@@ -1,8 +1,8 @@
 {
   "name": "forecast-lab",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
-  "description": "Laboratorio de an\u00e1lisis y pron\u00f3stico temporal",
+  "description": "Laboratorio de análisis y pronóstico temporal",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "npm run build && electron .",
@@ -15,7 +15,8 @@
     "smoke:units": "node tests/smoke-units.cjs",
     "units": "npm run build && electron . --curriculum",
     "smoke:emulator": "node tests/smoke-emulator.cjs",
-    "emulator": "npm run build && electron . --emulator"
+    "emulator": "npm run build && electron . --emulator",
+    "smoke:guide": "node tests/smoke-guide.cjs"
   },
   "dependencies": {
     "katex": "^0.16.22",
