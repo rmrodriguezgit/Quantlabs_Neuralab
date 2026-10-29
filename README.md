@@ -1,4 +1,4 @@
-# Quantslab Neuralab · Forecast Lab 1.3
+# Quantlabs Neuralab · Forecast Lab 1.3
 
 Aplicación de escritorio para explorar series empresariales y financieras, generar escenarios, comparar pronósticos y estudiar los métodos. Interfaz en español, Electron + React/TypeScript y motor Python mediante JSON por entrada/salida estándar.
 
@@ -10,11 +10,11 @@ Aplicación de escritorio para explorar series empresariales y financieras, gene
 
 ## Repositorio
 
-[rmrodriguezgit/Quantslab_Neuralab](https://github.com/rmrodriguezgit/Quantslab_Neuralab)
+[rmrodriguezgit/Quantlabs_Neuralab](https://github.com/rmrodriguezgit/Quantlabs_Neuralab)
 
 ```bash
-git clone https://github.com/rmrodriguezgit/Quantslab_Neuralab.git
-cd Quantslab_Neuralab
+git clone https://github.com/rmrodriguezgit/Quantlabs_Neuralab.git
+cd Quantlabs_Neuralab
 # macOS: FORECAST_ADVANCED=1 ./start_mac.sh
 # Windows: set FORECAST_ADVANCED=1 y ejecutar start_windows.bat
 ```
