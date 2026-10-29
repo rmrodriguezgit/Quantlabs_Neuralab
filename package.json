@@ -1,6 +1,6 @@
 {
   "name": "forecast-lab",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "private": true,
   "description": "Quantlabs Neurolab · Laboratorio de análisis, simulación y redes neuronales",
   "main": "dist-electron/main.js",
