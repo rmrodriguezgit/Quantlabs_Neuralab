@@ -77,3 +77,11 @@ Vite advierte que el bundle principal supera 500 kB; la compilación concluye co
 ## Identidad 1.4.1
 
 Build aprobado y prueba Electron `node tests/smoke-brand.cjs` aprobada: nombre, título, versión visible 1.4.1 e icono SVG cargado. Iconos PNG, ICNS e ICO incluidos; los instaladores de Windows no se ejecutaron en macOS.
+
+## GAN temporal 1.5.0
+
+- 87 pruebas Python aprobadas: 78 anteriores y nueve nuevas de condiciones, causalidad, escalas, volumen, regímenes, dinámica temporal, diversidad, ambas expansiones convolucionales, serialización e inferencia exportada.
+- Después del ajuste final de activación de la proyección, las nueve pruebas cDCGAN se repitieron y aprobaron.
+- Build de TypeScript/Vite aprobado.
+- `npm run smoke:cdcgan` aprobado en Electron: U9 con cinco condiciones, cDCGAN, embeddings, sensibilidad al régimen con ruido fijo, diagnóstico, banco de variantes, exportación ZIP y ejecución del CLI desde el paquete extraído.
+- Pruebas realizadas con datos sintéticos y presupuesto corto; verifican funcionamiento, no calidad predictiva ni calibración financiera.

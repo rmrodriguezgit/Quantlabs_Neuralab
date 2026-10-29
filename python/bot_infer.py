@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from financial_lab import indicators
 
-def infer(bundle,asset=0,csv=None,position=0.,scenarios=32,asof=None):
+def infer(bundle,asset=0,csv=None,position=0.,scenarios=32,asof=None,regime=None):
     root=Path(bundle);manifest=json.loads((root/'manifest.json').read_text());assets=manifest['assets']
     for name,checksum in manifest.get('files',{}).items():
         if hashlib.sha256((root/name).read_bytes()).hexdigest()!=checksum:raise ValueError('Archivo modificado o dañado: '+name)
@@ -23,7 +23,13 @@ def infer(bundle,asset=0,csv=None,position=0.,scenarios=32,asof=None):
         import tensorflow as tf
         returns=np.log(frame.Close/frame.Close.shift(1)).dropna().to_numpy();period=cfg.get('conditionPeriod',20)
         if len(returns)<period:raise ValueError('Historial insuficiente para condición.')
-        c=np.log(max(float(np.std(returns[-period:],ddof=1)),1e-8));c=(c-s['conditionMean'])/s['conditionScale'];latent=cfg.get('latentDim',4);rng=np.random.default_rng(manifest['seed']);z=rng.normal(size=(scenarios,latent)).astype(np.float32);model=tf.keras.models.load_model(root/'generator.keras',compile=False);ret=model(np.c_[z,np.full(scenarios,c,np.float32)],training=False).numpy()*s['returnScale']+s['returnMean'];output.update(returnScenarios=ret.tolist(),priceScenarios=(frame.Close.iloc[-1]*np.exp(np.cumsum(ret,axis=1))).tolist(),note='Escenarios condicionales sin calibración de cobertura.');return output
+        latent=cfg.get('latentDim',4);rng=np.random.default_rng(manifest['seed']);z=rng.normal(size=(scenarios,latent)).astype(np.float32)
+        if 'conditionSchema' in s:
+            from generative_conditions import inference_condition
+            c,raw=inference_condition(frame,cfg,s['conditionSchema'],int(asset),regime);conditions=np.repeat(c[None],scenarios,axis=0);output['conditions']={'names':s['conditionSchema']['names'],'values':raw.tolist(),'regimeOverride':regime}
+        else:
+            c=np.log(max(float(np.std(returns[-period:],ddof=1)),1e-8));conditions=np.full((scenarios,1),(c-s['conditionMean'])/s['conditionScale'],np.float32)
+        model=tf.keras.models.load_model(root/'generator.keras',compile=False);ret=model(np.concatenate([z,conditions],axis=1),training=False).numpy()*s['returnScale']+s['returnMean'];output.update(returnScenarios=ret.tolist(),priceScenarios=(frame.Close.iloc[-1]*np.exp(np.cumsum(ret,axis=1))).tolist(),note='Escenarios condicionales sin calibración de cobertura.');return output
     features=indicators(frame,cfg)[manifest['features']].to_numpy();lookback=manifest['lookback'];X=features[-lookback:]
     if len(X)!=lookback or not np.isfinite(X).all():raise ValueError('Historial insuficiente o indicadores no finitos.')
     X=((X-np.asarray(s['featureMean']))/np.asarray(s['featureScale'])).astype(np.float32)
@@ -54,6 +60,6 @@ def infer(bundle,asset=0,csv=None,position=0.,scenarios=32,asof=None):
     threshold=2*cfg.get('costBps',5);output.update(predictedIntradayBps=value,signal=int(np.sign(value)) if abs(value)>threshold else 0,signalThresholdBps=threshold,execution='entrada en próxima apertura y salida en su cierre',note='El umbral cubre una aproximación a costes; no garantiza beneficio.');return output
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--bundle',default='.');p.add_argument('--asset',type=int,default=0);p.add_argument('--csv');p.add_argument('--position',type=float,default=0);p.add_argument('--scenarios',type=int,default=32);p.add_argument('--asof');p.add_argument('--output');args=p.parse_args();result=infer(args.bundle,args.asset,args.csv,args.position,args.scenarios,args.asof);text=json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)
+    p=argparse.ArgumentParser();p.add_argument('--bundle',default='.');p.add_argument('--asset',type=int,default=0);p.add_argument('--csv');p.add_argument('--position',type=float,default=0);p.add_argument('--scenarios',type=int,default=32);p.add_argument('--asof');p.add_argument('--regime',type=int,choices=[0,1,2]);p.add_argument('--output');args=p.parse_args();result=infer(args.bundle,args.asset,args.csv,args.position,args.scenarios,args.asof,args.regime);text=json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False)
     if args.output:Path(args.output).write_text(text,encoding='utf-8')
     else:print(text)

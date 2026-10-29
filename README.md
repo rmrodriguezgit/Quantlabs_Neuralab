@@ -1,8 +1,10 @@
-# Quantlabs Neurolab · 1.4.1
+# Quantlabs Neurolab · 1.5.0
 
 Aplicación de escritorio para explorar series empresariales y financieras, generar escenarios, comparar pronósticos y estudiar los métodos. Interfaz en español, Electron + React/TypeScript y motor Python mediante JSON por entrada/salida estándar.
 
-**Nuevo 1.4.1:** nombre Quantlabs Neurolab, versión visible desde `package.json` e icono propio para interfaz, Dock y paquetes macOS/Windows.
+**Nuevo 1.5.0:** [cDCGAN 1D, condiciones y evaluación temporal](docs/CDC_GAN_FINANZAS.md). Embeddings de activo/régimen, normalización configurable, escenarios con el mismo ruido, diagnóstico de diversidad y exportación portable.
+
+**Versión 1.4.1:** nombre Quantlabs Neurolab, versión visible desde `package.json` e icono propio para interfaz, Dock y paquetes macOS/Windows.
 
 **Versión 1.4:** [Configuración guiada y revisión previa](docs/REINGENIERIA_USO.md): cuatro pasos, ayuda contextual, prueba rápida y comprobación de datos antes de entrenar.
 

@@ -4,7 +4,7 @@ import numpy as np
 from features import bounded_int,normalize_features,training_windows,feature_matrix
 from training_control import MAX_EPOCHS,settings,TrainingControl,checkpoint_callback
 
-ACTIVATIONS={'linear','relu','tanh','sigmoid','elu','selu','softplus','swish'}
+ACTIVATIONS={'linear','relu','tanh','sigmoid','elu','selu','softplus','swish','leaky_relu'}
 OPTIMIZERS={'adam','adamw','rmsprop','sgd','adamax','nadam','adagrad'}
 NETWORKS={'rnn','cnn','lstm','dqn','gan'}
 
@@ -28,7 +28,7 @@ def architecture(raw=None,kind='dense'):
         if not isinstance(layer,dict) or layer.get('activation','relu') not in ACTIVATIONS:raise ValueError('Activación intermedia no admitida.')
         gate=layer.get('recurrentActivation','sigmoid')
         if gate not in ('sigmoid','tanh','linear'):raise ValueError('Activación recurrente no admitida.')
-        normalized.append({'units':bounded_int(layer.get('units',24),1,256,'Neuronas/filtros'),'activation':layer.get('activation','relu'),'recurrentActivation':gate,'dropout':real(layer.get('dropout',0),0,.5,'Dropout'),'kernelSize':bounded_int(layer.get('kernelSize',3),1,9,'Kernel CNN')})
+        normalized.append({'units':bounded_int(layer.get('units',24),1,256,'Neuronas/filtros'),'activation':layer.get('activation','relu'),'recurrentActivation':gate,'dropout':real(layer.get('dropout',0),0,.5,'Dropout'),'kernelSize':bounded_int(layer.get('kernelSize',3),1,9,'Kernel CNN'),'stride':bounded_int(layer.get('stride',2),1,4,'Stride GAN'),**({'batchNorm':layer['batchNorm']} if isinstance(layer.get('batchNorm'),bool) else {})})
     optimizer=raw.get('optimizer','adam')
     if optimizer not in OPTIMIZERS:raise ValueError('Optimizador no admitido.')
     return {'inputUnits':bounded_int(raw.get('inputUnits',16),1,256,'Neuronas de entrada'),'inputActivation':activation,'layers':normalized,'optimizer':optimizer,'learningRate':real(raw.get('learningRate',.001),1e-6,.1,'Tasa de aprendizaje')}

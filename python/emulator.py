@@ -9,7 +9,7 @@ from training_control import TrainingControl,checkpoint_callback
 from model_exports import export_bundle
 
 PREDICTIVE=['ridge','mlp','cnn','rnn','lstm','gru','bilstm','bigru','ae_ridge','dae_ridge','pca_ridge']
-GENERATION=['cvae','cgan']
+GENERATION=['cvae','cgan','cdcgan']
 TRADING=['dqn','ddqn']
 
 def progress(value):
@@ -111,8 +111,8 @@ def run(req):
         if mode in ('predictive','classification'):
             p=f['panel'];te=p['masks']['test'];pred=f['predict'](te);test=(classification_metrics if mode=='classification' else regression_metrics)(p['y'][te],pred);s=f['scale'];scalers={key:np.asarray(s[key]).tolist() for key in ('featureMean','featureScale','targetMean','targetScale')}
         elif mode=='generation':
-            from unit_generative import distribution
-            p=f['prepared'];te=p['masks']['test'];noise=np.random.default_rng(base['seed']+999).normal(size=(int(te.sum()),cfg.get('latentDim',4))).astype(np.float32);samples=f['models']['generator'](np.concatenate([noise,p['c'][te]],axis=1),training=False).numpy()*p['std']+p['mean'];test=distribution(p['raw'][te],samples,float(np.quantile(p['raw'][p['masks']['train']],.05)));scalers={'returnMean':p['mean'],'returnScale':p['std'],'conditionMean':p['conditionMean'],'conditionScale':p['conditionScale']}
+            from unit_generative import distribution,regime_evaluation
+            p=f['prepared'];te=p['masks']['test'];noise=np.random.default_rng(base['seed']+999).normal(size=(int(te.sum()),cfg.get('latentDim',4))).astype(np.float32);samples=f['models']['generator'](np.concatenate([noise,p['c'][te]],axis=1),training=False).numpy()*p['std']+p['mean'];test=distribution(p['raw'][te],samples,float(np.quantile(p['raw'][p['masks']['train']],.05)));test['byRegime']=regime_evaluation(p,te,samples);scalers={'returnMean':p['mean'],'returnScale':p['std'],'conditionMean':p['conditionMean'],'conditionScale':p['conditionScale'],'conditionSchema':p['conditionSchema']}
         else:
             p=f['panel'];te=p['masks']['test'];test=test_trading(f['models']['online'],f['scale']['X'][te,0,:],[r for r,m in zip(p['meta'],te) if m],cfg)['metrics'];s=f['scale'];scalers={key:np.asarray(s[key]).tolist() for key in ('featureMean','featureScale','targetMean','targetScale')}
         winner={**record,'test':test,'scalers':scalers,'kind':f['kind'],'lookback':f['lookback'],'features':base['selectedFeatures']}
@@ -120,4 +120,4 @@ def run(req):
             winner['artifact']=export_bundle(root,family,f['kind'],cfg,datasets,scalers,f['models'],f['extras'],record['validation'],test,f['lookback'])
         winners.append(winner)
     winners.sort(key=lambda w:(w['selectionScore'],w['parameters']));progress({'stage':'complete','family':winners[0]['family'],'completed':total,'total':total});splits=split_summary(source_panel) if source_panel is not None else None
-    return {'elapsedSeconds':time.monotonic()-started,'mode':mode,'criterion':'MSE menor; R² mayor sobre las mismas etiquetas de validación' if mode=='predictive' else 'BCE menor y AUC reportado en validación' if mode=='classification' else 'Wasserstein + diferencia std en validación' if mode=='generation' else 'retorno neto de validación mayor','units':'bps log intradía siguiente' if mode=='predictive' else 'probabilidad de alza intradía' if mode=='classification' else 'retornos generados' if mode=='generation' else 'retorno neto de trading','bestFamily':winners[0]['family'],'winners':winners,'variants':history,'failures':failures,'search':search,'config':base,'splits':splits,'testPolicy':'Test evaluado solo para la variante ganadora de cada familia, después de toda la búsqueda. No se usa para elegir variantes.','note':'Con las mismas etiquetas, minimizar MSE equivale a maximizar R² si su varianza no es cero. Las métricas entre tareas diferentes no se mezclan.'}
+    return {'elapsedSeconds':time.monotonic()-started,'mode':mode,'criterion':'MSE menor; R² mayor sobre las mismas etiquetas de validación' if mode=='predictive' else 'BCE menor y AUC reportado en validación' if mode=='classification' else 'Wasserstein + diferencia std + distancia temporal ACF en validación' if mode=='generation' else 'retorno neto de validación mayor','units':'bps log intradía siguiente' if mode=='predictive' else 'probabilidad de alza intradía' if mode=='classification' else 'retornos generados' if mode=='generation' else 'retorno neto de trading','bestFamily':winners[0]['family'],'winners':winners,'variants':history,'failures':failures,'search':search,'config':base,'splits':splits,'testPolicy':'Test evaluado solo para la variante ganadora de cada familia, después de toda la búsqueda. No se usa para elegir variantes.','note':'Con las mismas etiquetas, minimizar MSE equivale a maximizar R² si su varianza no es cero. Las métricas entre tareas diferentes no se mezclan.'}

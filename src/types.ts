@@ -11,7 +11,7 @@ export const label=(method:string)=>METHODS[method]?.label||method;
 export const num=(v:number|null|undefined)=>v==null?'—':v.toLocaleString('es-MX',{maximumFractionDigits:3});
 
 export type NetworkName='rnn'|'cnn'|'lstm'|'dqn'|'gan';
-export interface LayerConfig {units:number;activation:string;recurrentActivation:string;dropout:number;kernelSize:number}
+export interface LayerConfig {units:number;activation:string;recurrentActivation:string;dropout:number;kernelSize:number;stride?:number;batchNorm?:boolean}
 export interface Architecture {inputUnits:number;inputActivation:string;layers:LayerConfig[];optimizer:string;learningRate:number}
 export interface FeatureConfig {lags:number[];ema:number[];sma:number[];rsi:boolean;rsiPeriod:number;macd:boolean;macdFast:number;macdSlow:number;macdSignal:number;returns:boolean;volatility:boolean;volatilityPeriod:number}
 export interface NetworkConfig extends Architecture {earlyStopping:boolean;patience:number;minDelta:number;warmupEpochs:number;validationFraction:number;lookback:number;epochs:number;batchSize:number;features:FeatureConfig;discriminator:Architecture;latentDim:number;draws:number;reconstructionWeight:number}

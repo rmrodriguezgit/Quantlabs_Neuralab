@@ -1,6 +1,6 @@
 {
   "name": "forecast-lab",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "private": true,
   "description": "Quantlabs Neurolab · Laboratorio de análisis, simulación y redes neuronales",
   "main": "dist-electron/main.js",
@@ -16,7 +16,8 @@
     "units": "npm run build && electron . --curriculum",
     "smoke:emulator": "node tests/smoke-emulator.cjs",
     "emulator": "npm run build && electron . --emulator",
-    "smoke:guide": "node tests/smoke-guide.cjs"
+    "smoke:guide": "node tests/smoke-guide.cjs",
+    "smoke:cdcgan": "node tests/smoke-cdcgan.cjs"
   },
   "dependencies": {
     "katex": "^0.16.22",

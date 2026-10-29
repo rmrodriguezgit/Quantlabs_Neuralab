@@ -20,7 +20,7 @@ def preview(req):
         if fits==0:raise ValueError('Paso 3: selecciona al menos un modelo.')
     if (kind=='unit' and unit==9) or (kind=='bank' and mode=='generation'):
         from unit_generative import windows
-        p=windows(datasets,cfg);splits={name:{'samples':int(mask.sum())} for name,mask in p['masks'].items()};criterion='Distribución en validación; ruido fijo'
+        p=windows(datasets,cfg);splits={name:{'samples':int(mask.sum())} for name,mask in p['masks'].items()};criterion='Distribución y dinámica temporal ACF en validación; ruido fijo'
     else:
         p=panel(datasets,cfg,lookback);splits=split_summary(p);criterion='Retorno neto con costes' if trading else 'Reconstrucción en validación' if kind=='unit' and unit==8 else 'BCE de validación' if mode=='classification' or kind=='unit' and (unit==4 or unit in (2,3) and cfg.get('task')=='classification') else 'MSE/RMSE de validación'
         if int(p['masks']['train'].sum())<16:raise ValueError('Paso 2: hacen falta al menos 16 muestras de entrenamiento después del calentamiento.')

@@ -35,6 +35,7 @@ def ohlc_frame(ds):
     if not np.isfinite(f.to_numpy()).all() or (f<=0).any().any():raise ValueError('Los precios OHLC deben ser positivos y finitos.')
     if ((f.High<f[['Open','Close','Low']].max(axis=1))|(f.Low>f[['Open','Close','High']].min(axis=1))).any():raise ValueError('OHLC incoherentes: High/Low no contienen apertura y cierre.')
     if ds.get('frequency') not in ('daily','business'):raise ValueError('Las unidades financieras requieren barras diarias; no se interpretan minutos como sesiones.')
+    if 'volume' in lookup:f['Volume']=dataset_frame(ds)[lookup['volume']].astype(float).to_numpy()
     return f
 
 

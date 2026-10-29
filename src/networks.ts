@@ -1,6 +1,6 @@
 import {Architecture,FeatureConfig,NetworkConfig,NetworkConfigs,NetworkName,LayerConfig} from './types';
 export const NETWORK_NAMES:NetworkName[]=['rnn','cnn','lstm','dqn','gan'];
-export const ACTIVATIONS=['linear','relu','tanh','sigmoid','elu','selu','softplus','swish'];
+export const ACTIVATIONS=['linear','relu','tanh','sigmoid','elu','selu','softplus','swish','leaky_relu'];
 export const OPTIMIZERS=['adam','adamw','rmsprop','sgd','adamax','nadam','adagrad'];
 export const NETWORK_STORAGE='forecast-lab-networks-v1';
 export function layer(activation='relu'):LayerConfig{return {units:24,activation,recurrentActivation:'sigmoid',dropout:0,kernelSize:3}}
