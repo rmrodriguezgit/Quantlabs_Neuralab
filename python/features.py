@@ -86,7 +86,7 @@ def feature_matrix(values,config=None):
     return rows,stream
 
 
-def training_windows(values,config,lookback):
+def training_windows(values,config,lookback,feature_scaler='standard',target_scaler='standard',target_transform='level'):
     y=np.asarray(values,dtype=float)
     matrix,stream=feature_matrix(y,config)
     start=stream.warmup+lookback
@@ -95,8 +95,10 @@ def training_windows(values,config,lookback):
     if samples*lookback*len(stream.names)>20_000_000:raise ValueError('La matriz supera 20 millones de elementos; reduce registros, ventana o características.')
     # Only feature rows used to predict observed training targets enter the scaler.
     fit_rows=matrix[stream.warmup:-1]
-    mean=fit_rows.mean(axis=0);scale=np.maximum(fit_rows.std(axis=0),1e-8)
+    from scaling import fit_affine
+    mean,scale=fit_affine(fit_rows,feature_scaler)
     normalized=(matrix-mean)/scale
     X=np.asarray([normalized[i-lookback:i] for i in range(start,len(y))],dtype=np.float32)
-    target=y[start:];ym=float(target.mean());ys=max(float(target.std()),1e-8)
-    return {'X':X,'target':((target-ym)/ys).astype(np.float32),'targetMean':ym,'targetScale':ys,'featureMean':mean,'featureScale':scale,'matrix':matrix,'stream':stream,'samples':samples,'start':start}
+    from target_transforms import transform
+    target=transform(y,target_transform)[start:];ym,ys=fit_affine(target,target_scaler);ym=float(ym);ys=float(ys)
+    return {'X':X,'target':((target-ym)/ys).astype(np.float32),'targetMean':ym,'targetScale':ys,'featureMean':mean,'featureScale':scale,'matrix':matrix,'stream':stream,'samples':samples,'start':start,'featureMethod':feature_scaler,'targetMethod':target_scaler,'targetTransform':target_transform}

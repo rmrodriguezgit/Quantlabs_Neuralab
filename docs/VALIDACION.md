@@ -93,3 +93,11 @@ Build aprobado y `npm run smoke:infographics` aprobado: ambas láminas de Unidad
 ## Perfiles 1.6.0
 
 90 pruebas Python aprobadas en 67 s, incluidas comprobaciones de todos los perfiles contra el preflight real y conservación de metadatos de red. `npm run test:profiles` aprobado: 14 perfiles de unidades, cinco redes y 24 búsquedas. Build aprobado. Prueba Electron de perfiles aprobada: aplicación, edición libre, recuperación, persistencia y navegación entre unidades.
+
+## Auditoría MSE/R² y Forex 1.7.0
+
+- 105 pruebas Python aprobadas (70 s), incluidas precisión de MSE/R², invariancia de R² a escalado afín, rechazo de shapes inválidos, ajuste TR de Standard/Robust/MinMax/None, desescalado, deduplicación de ventanas, causalidad, barras cerradas, TE configurable y reconstrucción de cotizaciones desde diferencias/log-retornos.
+- `npm run smoke:fx-audit` aprobado con precios sintéticos: preparación Forex RNN/LSTM/CNN, auditoría visible, fechas/scalers sin cruce de VA/TE, pips y exportación JSON.
+- Prueba adicional con EURUSD=X diario real: los 14 métodos de Análisis y Simulación completaron tres folds externos de veinte pasos. TE se consultó solo para el ganador de VA. Informe y limitaciones en `REVISION_MSE_R2.md`; resumen reproducible en `examples/auditoria-eurusd-resumen-v1.7.json`.
+- Comparación adicional RNN/LSTM de objetivo/scaler exclusivamente en VA; no se usó TE para retocar parámetros. Son resultados de un presupuesto acotado, no un óptimo demostrado.
+- Build TypeScript/Vite y verificación de perfiles/precisión JavaScript aprobados.

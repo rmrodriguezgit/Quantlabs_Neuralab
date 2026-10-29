@@ -64,6 +64,9 @@ def finance(req):
     frame=yf.download(ticker,period=period,interval=interval,auto_adjust=True,progress=False,threads=False,timeout=25,multi_level_index=False)
     if frame.empty:raise ValueError('Yahoo no devolvió datos. Comprueba ticker, conexión o límite de consultas.')
     frame=frame.dropna()
+    if interval=='1d':
+        today=pd.Timestamp.now(tz='UTC').date();frame=frame[np.asarray([d.date()<today for d in frame.index])]
+        if frame.empty:raise ValueError('No hay barras diarias cerradas anteriores a hoy UTC.')
     return serialize(frame,ticker,'financial',{'1d':'business','1h':'hourly','15m':'15min'}[interval])
 
 def import_files(req):
@@ -91,10 +94,13 @@ def import_files(req):
     return out
 
 def metrics(actual,predicted):
-    a=np.asarray(actual);p=np.asarray(predicted)
-    if len(a)!=len(p) or not np.isfinite(p).all():raise ValueError('Predicción inválida.')
-    residual=a-p; mse=float(np.mean(residual**2));den=float(np.sum((a-a.mean())**2))
-    return {'mse':mse,'rmse':math.sqrt(mse),'mae':float(np.mean(np.abs(residual))),'r2':None if den<1e-12 else float(1-np.sum(residual**2)/den)}
+    a=np.asarray(actual,dtype=float);p=np.asarray(predicted,dtype=float)
+    if a.ndim!=1 or p.ndim!=1 or a.shape!=p.shape or not len(a) or not np.isfinite(a).all() or not np.isfinite(p).all():raise ValueError('Métricas requieren vectores 1D finitos, no vacíos y de igual longitud.')
+    residual=a-p;mse=float(np.mean(residual**2));centered=a-a.mean();den=float(np.sum(centered**2))
+    # R² is undefined for a constant target; do not use a unit-dependent cutoff.
+    constant=bool(np.all(a==a[0])) or len(a)<2
+    return {'mse':mse,'rmse':math.sqrt(mse),'mae':float(np.mean(np.abs(residual))),'r2':None if constant or den==0 else float(1-np.sum(residual**2)/den)}
+
 
 def horizons(ds,index):
     last=index[-1]
@@ -111,7 +117,7 @@ def decompose(y,period):
         note='STL descriptivo sobre la serie completa; no se usa para entrenar ni evaluar modelos.'
     else:
         tr=pd.Series(y).rolling(min(5,len(y)),min_periods=1,center=True).mean().to_numpy();va=np.zeros(len(y));te=y-tr
-        note='Sin dos ciclos completos: tendencia móvil descriptiva, VA=0; no estima estacionalidad.'
+        note='Sin dos ciclos completos: tendencia móvil descriptiva, estacionalidad=0; no estima estacionalidad.'
     return {'trend':tr.tolist(),'seasonal':va.tolist(),'residual':te.tolist(),'note':note}
 
 def analyze(req):
@@ -125,7 +131,8 @@ def analyze(req):
     folds=integer(req.get('folds',2),1,5,'Ventanas')
     seed=integer(req.get('seed',42),0,2**31-1,'Semilla')
     # Final holdout reserved before any ranking or model selection.
-    test_size=max(4,min(len(y)//5,60));selection=y[:-test_size];holdout=y[-test_size:]
+    requested_test=integer(req.get('testSteps',0),0,min(5000,len(y)//3),'TE reservado')
+    test_size=requested_test or max(4,min(len(y)//5,60));selection=y[:-test_size];holdout=y[-test_size:]
     windows=horizons(ds,frame.index)
     validation_h=integer(req.get('validationSteps',max(2,min(12,len(selection)//8))),1,5000,'Pasos de validación')
     if len(selection)-folds*validation_h<12:raise ValueError('No hay datos suficientes para las ventanas de validación configuradas.')
@@ -133,22 +140,29 @@ def analyze(req):
     if not isinstance(options,dict):raise ValueError('Opciones inválidas.')
     from neural import network_config
     options['networks']={method:network_config(method,options) for method in methods if method in ('rnn','cnn','lstm','dqn','gan')}
-    experiment={'methods':list(methods),'options':options,'seed':seed,'seasonPeriod':period,'folds':folds,'validationSteps':validation_h,'forecastSteps':integer(req.get('forecastSteps',30),1,5000,'Horizonte futuro')}
-    ranking=[];failures=[];reports=[]
-    def evaluate(name,h):
-        actual=[];pred=[];fold_metrics=[]
+    experiment={'methods':list(methods),'options':options,'seed':seed,'seasonPeriod':period,'folds':folds,'validationSteps':validation_h,'testSteps':test_size,'forecastSteps':integer(req.get('forecastSteps',30),1,5000,'Horizonte futuro')}
+    ranking=[];failures=[];reports=[];baseline_validation={};fold_details=[]
+    def evaluate(name,h,record=False):
+        actual=[];pred=[];fold_metrics=[];base_values=[]
         for k in range(folds):
             end=len(selection)-(folds-k)*h
             if end<12:raise ValueError(f'Historial insuficiente: {folds} ventanas × {h} pasos + entrenamiento mínimo + test reservado.')
-            forecast=predict(name,selection[:end],h,period,seed+k,options)['prediction']
+            fitted_fold=predict(name,selection[:end],h,period,seed+k,options);forecast=fitted_fold['prediction']
+            base_values.extend(np.repeat(selection[end-1],h).tolist())
+            if record:
+                info=fitted_fold.get('network',{});scaling=info.get('scaling',fitted_fold.get('preparation',{}));cut=scaling.get('trainingEndIndex',end-1 if not info else None);last_input=scaling.get('featureFitLastIndex');offset=info.get('historyOffset',0)
+                fold_details.append({'method':name,'fold':k+1,'outerTrainSamples':end-offset,'availableHistoryRows':end,'trainFirst':frame.index[offset].isoformat(),'outerTrainLast':frame.index[end-1].isoformat(),'validationFirst':frame.index[end].isoformat(),'validationLast':frame.index[end+h-1].isoformat(),'validationSamples':h,'internalTrainSamples':info.get('trainingSamples',scaling.get('fitRows')),'internalValidationSamples':info.get('validationSamples'),'scalerFitLastInput':frame.index[last_input+offset].isoformat() if last_input is not None else None,'internalTrainLast':frame.index[cut+offset].isoformat() if cut is not None else None,'internalValidationFirst':frame.index[cut+1+offset].isoformat() if info and cut is not None and cut+1+offset<end else None,'featureScaler':scaling.get('featureMethod'),'targetScaler':scaling.get('targetMethod'),'targetTransform':scaling.get('targetTransform'),'fitMetrics':info.get('fitMetrics')})
             truth=selection[end:end+h];actual.extend(truth.tolist());pred.extend(forecast);fold_metrics.append(metrics(truth,forecast))
+        if record:baseline_validation[name]=metrics(actual,base_values)
         return {'method':name,**metrics(actual,pred),'folds':folds,'observations':len(actual),'foldMetrics':fold_metrics}
     for name in methods:
-        try:ranking.append(evaluate(name,validation_h))
+        try:ranking.append(evaluate(name,validation_h,True))
         except Exception as exc:failures.append({'method':name,'scope':'validación','error':str(exc)})
     sort_key=lambda x:(x['rmse'],x['mae'],-(x['r2'] if x['r2'] is not None else -float('inf')))
     ranking.sort(key=sort_key)
-    for label,h in windows:
+    extra_horizons=options.get('evaluateExtraHorizons',True)
+    if not isinstance(extra_horizons,bool):raise ValueError('Horizontes adicionales debe ser booleano.')
+    for label,h in (windows if extra_horizons else []):
         results=[];errors=[]
         for name in methods:
             try:results.append(evaluate(name,h))
@@ -169,7 +183,9 @@ def analyze(req):
     anova=None
     if len(groups)>1 and all(len(g)>=2 for g in groups):
         result=f_oneway(*groups);anova={'f':float(result.statistic),'p':float(result.pvalue),'note':'ANOVA exploratorio por fase estacional; autocorrelación y tendencia pueden invalidar la inferencia clásica.'}
-    return {'experiment':experiment,'winner':winner,'ranking':ranking,'reports':reports,'failures':failures,'test':{'dates':[d.isoformat() for d in frame.index[-test_size:]],'actual':holdout.tolist(),**fitted,'metrics':test_metrics},'future':{'dates':[d.isoformat() for d in future_dates],**future},'dates':[d.isoformat() for d in frame.index],'actual':y.tolist(),'decomposition':decompose(y,period),'residualHistogram':[{'bin':f'{edges[i]:.2f}…{edges[i+1]:.2f}','count':int(counts[i])} for i in range(len(counts))],'anova':anova,'note':'Ranking por RMSE, luego MAE y R² en empates. Ventanas crecientes anteriores al test final; métricas futuras desconocidas. Fechas financieras futuras aproximadas: no incluyen calendario de bolsa.'}
+    from series_diagnostics import build as build_diagnostics
+    diagnostics=build_diagnostics(ds,column,y,frame.index,len(selection),test_size,ranking,test_metrics,fitted['prediction'],methods,options,baseline_validation,fold_details)
+    return {'diagnostics':diagnostics,'experiment':experiment,'winner':winner,'ranking':ranking,'reports':reports,'failures':failures,'test':{'dates':[d.isoformat() for d in frame.index[-test_size:]],'actual':holdout.tolist(),**fitted,'metrics':test_metrics},'future':{'dates':[d.isoformat() for d in future_dates],**future},'dates':[d.isoformat() for d in frame.index],'actual':y.tolist(),'decomposition':decompose(y,period),'residualHistogram':[{'bin':f'{edges[i]:.2f}…{edges[i+1]:.2f}','count':int(counts[i])} for i in range(len(counts))],'anova':anova,'note':'Ranking por RMSE, luego MAE y R² en empates. Ventanas crecientes anteriores al test final; métricas futuras desconocidas. Fechas financieras futuras aproximadas: no incluyen calendario de bolsa.'}
 
 def capabilities():
     return {name:importlib.util.find_spec(module) is not None for name,module in {'numpy':'numpy','pandas':'pandas','statsmodels':'statsmodels','arch':'arch','prophet':'prophet','tensorflow':'tensorflow','gymnasium':'gymnasium','yfinance':'yfinance'}.items()}

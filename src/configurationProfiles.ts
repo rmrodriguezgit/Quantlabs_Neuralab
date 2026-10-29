@@ -29,7 +29,7 @@ function arch(widths:number[],activation='relu',lr=.001,dropout=0,conv=false):Ar
 const budget={epochs:1500,earlyStopping:true,patience:30,minDelta:.00001,warmupEpochs:10,batchSize:64};
 export const FAMILY_NAMES:Record<string,string>={ridge:'Ridge',logistic:'Regresión logística',mlp:'MLP',cnn:'CNN 1D',rnn:'RNN',lstm:'LSTM',gru:'GRU',bilstm:'BiLSTM',bigru:'BiGRU',ae_ridge:'AE + Ridge',dae_ridge:'DAE + Ridge',pca_ridge:'PCA + Ridge',cvae:'CVAE',cgan:'cGAN denso',cdcgan:'cDCGAN 1D',dqn:'DQN',ddqn:'Double DQN'};
 export function familyPatch(family:string):Partial<UnitConfig>{
- const common:Partial<UnitConfig>={...budget,projectInput:false,selectedFeatures:defaultUnit(2).selectedFeatures};
+ const common:Partial<UnitConfig>={...budget,featureScaler:'standard',targetScaler:'standard',projectInput:false,selectedFeatures:[...defaultUnit(2).selectedFeatures,'return_current','intraday_current','gap_current']};
  if(family==='ridge'||family==='logistic')return {...common,ridgeAlpha:1,lookback:1};
  if(family==='mlp')return {...common,projectInput:true,architecture:{...arch([32], 'relu',.001,.1),inputUnits:64},lookback:1};
  if(family==='cnn')return {...common,architecture:arch([32,64],'relu',.001,.1),lookback:20,cnnPadding:'causal'};
@@ -56,10 +56,12 @@ export function unitPresets(unit:number,cfg:UnitConfig):Preset<UnitConfig>[] {
 export function networkPresets(name:NetworkName):Preset<NetworkConfig>[] {
  const base=defaultNetwork(name);const family=name==='gan'?'cgan':name;const p=familyPatch(family);const a=p.architecture||base;
  const features={...base.features,lags:[1,2],ema:[10,20],rsi:true,returns:true,volatility:true};
- const patch:Partial<NetworkConfig>={...budget,...a,features,lookback:name==='rnn'?10:20,batchSize:32,validationFraction:.2};
+ const patch:Partial<NetworkConfig>={featureScaler:'standard',targetScaler:'standard',targetTransform:'level',maxTrainSamples:0,...budget,...a,features,lookback:name==='rnn'?10:20,batchSize:32,validationFraction:.2};
  if(name==='gan')Object.assign(patch,p.generator,{discriminator:p.discriminator,latentDim:8,draws:64,reconstructionWeight:10});
  if(name==='dqn'){delete patch.epochs;delete patch.earlyStopping}
- return [{id:'network-'+name,label:(name==='gan'?'GAN de pronóstico':FAMILY_NAMES[name])+' · recomendado',description:name==='gan'?'G 64 → 32, D 32 → 64, LR 0.0002, ruido 8 y reconstrucción L1 10. Genera un valor por paso.':name==='dqn'?'Red Q 64 → 32 y ventana 20. Episodios y exploración se ajustan en RL del análisis.':familyDescription(name),patch}];
+ const presets:Preset<NetworkConfig>[]=[{id:'network-'+name,label:(name==='gan'?'GAN de pronóstico':FAMILY_NAMES[name])+' · recomendado',description:name==='gan'?'G 64 → 32, D 32 → 64, LR 0.0002, ruido 8 y reconstrucción L1 10. Genera un valor por paso.':name==='dqn'?'Red Q 64 → 32 y ventana 20. Episodios y exploración se ajustan en RL del análisis.':familyDescription(name),patch}];
+ if(['rnn','cnn','lstm','gan'].includes(name))presets.push({id:'forex-'+name,label:'Forex · '+name.toUpperCase()+' · log-retornos',description:'Punto de partida Forex: contexto 20, últimas 500 observaciones, VA interna 10%, Robust X, Standard y y objetivo log-retorno reconstruido a cotización. Compara con persistencia en los mismos folds.',patch:{...patch,epochs:300,patience:20,warmupEpochs:10,maxTrainSamples:500,validationFraction:.1,targetTransform:'log_return',featureScaler:'robust',targetScaler:'standard',inputUnits:16,layers:[{...layer(name==='rnn'||name==='lstm'?'tanh':'relu'),units:16}],learningRate:.0003}});
+ return presets;
 }
 export function configurationSummary(cfg:Partial<UnitConfig&NetworkConfig>){
  const a=cfg.architecture||cfg;const layers=a.layers?.map(l=>l.units).join(' → ')||'—';

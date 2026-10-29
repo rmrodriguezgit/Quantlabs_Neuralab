@@ -43,4 +43,8 @@ def preview(req):
     elif cfg['earlyStopping'] and cfg['warmupEpochs']>=cfg['epochs']:warnings.append('El calentamiento alcanza el máximo de épocas: no habrá parada anticipada en este ensayo.')
     if not trading and cfg['epochs']>=1000 and not cfg['earlyStopping']:warnings.append('Early Stopping está apagado: cada red ejecutará el presupuesto completo.')
     if fits>10:warnings.append('Se probarán muchas configuraciones. Conviene validar primero una prueba rápida.')
-    return {'valid':True,'splits':splits,'purgedSamples':p['purged'],'excludedSamples':p.get('excluded',0),'fits':fits,'maxEpochs':None if trading else cfg['epochs'],'earlyStopping':cfg['earlyStopping'] if not trading else None,'criterion':criterion,'warnings':warnings,'assets':[d['name'] for d in datasets],'message':'Datos y particiones comprobados. No se ha entrenado ningún modelo.'}
+    audit=None
+    if not ((kind=='unit' and unit==9) or (kind=='bank' and mode=='generation')):
+        from experiment_diagnostics import data_audit
+        audit=data_audit(p,cfg,datasets=datasets)
+    return {'diagnostics':audit,'valid':True,'splits':splits,'purgedSamples':p['purged'],'excludedSamples':p.get('excluded',0),'fits':fits,'maxEpochs':None if trading else cfg['epochs'],'earlyStopping':cfg['earlyStopping'] if not trading else None,'criterion':criterion,'warnings':warnings,'assets':[d['name'] for d in datasets],'message':'Datos y particiones comprobados. No se ha entrenado ningún modelo.'}

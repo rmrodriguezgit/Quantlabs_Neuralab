@@ -66,10 +66,15 @@ def predict(name, values, steps, period=12, seed=42, options=None):
         f=model.predict(pd.DataFrame({'ds':pd.date_range(frame.ds.iloc[-1]+pd.Timedelta(days=1),periods=steps,freq='D')}))
         pred=f.yhat.to_numpy();extra={'lower':f.yhat_lower.tolist(),'upper':f.yhat_upper.tolist(),'intervalLabel':'Intervalo Prophet al 80% (predeterminado)'}
     elif name=='qlearning':
-        return _reinforcement(name,y,steps,seed,options)
+        result=_reinforcement(name,y,steps,seed,options);result['preparation']={'featureMethod':'Δ / std(Δ TR), estados fijos','targetMethod':'recompensa normalizada TR','targetTransform':'dirección','fitRows':len(y)-1,'featureFitLastIndex':len(y)-1};return result
     else: raise ValueError('Método desconocido: '+name)
     pred=np.asarray(pred,dtype=float)
     if len(pred)!=steps or not np.isfinite(pred).all(): raise ValueError('Pronóstico no finito o longitud inválida.')
+    prep={'featureMethod':'sin escalado','targetMethod':'sin escalado','targetTransform':'nivel','fitRows':len(y),'featureFitLastIndex':len(y)-1}
+    if name in ('linear','polynomial'):prep.update(featureMethod='StandardScaler del índice temporal TR')
+    if name in ('arima','sarima'):prep.update(targetMethod='Standard de niveles TR',targetCenter=center,targetScale=scale)
+    if name in ('garch','monte_carlo'):prep.update(targetMethod='retornos log × 100' if name=='garch' else 'distribución de retornos log TR',targetTransform='log-retorno reconstruido')
+    extra['preparation']=prep
     return {'prediction':pred.tolist(),**extra}
 
 def _reinforcement(name,y,steps,seed,options):

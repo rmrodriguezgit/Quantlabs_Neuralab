@@ -1,0 +1,263 @@
+{
+  "run": {
+    "source": "Yahoo Finance diario, barras anteriores a hoy UTC",
+    "firstDate": "2021-10-29T00:00:00",
+    "lastDate": "2026-10-28T00:00:00",
+    "records": 1299,
+    "seed": 42,
+    "budget": "40 épocas máximas, ES paciencia 8; RL 10 episodios; prueba acotada, no optimización exhaustiva",
+    "elapsedSeconds": 75.0326512089232
+  },
+  "validation": [
+    {
+      "method": "cnn",
+      "mse": 5.018698607966398e-05,
+      "rmse": 0.007084277385849878,
+      "r2": 0.5192883540220381,
+      "rmsePips": 70.84277385849877,
+      "skillVsPersistence": 0.5239175736959485,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "garch",
+      "mse": 9.998180089254331e-05,
+      "rmse": 0.00999909000322246,
+      "r2": 0.0423330861390282,
+      "rmsePips": 99.99090003222459,
+      "skillVsPersistence": 0.05155535182738946,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "qlearning",
+      "mse": 0.00010284986338949203,
+      "rmse": 0.010141492167797203,
+      "r2": 0.014861600971790012,
+      "rmsePips": 101.41492167797203,
+      "skillVsPersistence": 0.02434841514919195,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "monte_carlo",
+      "mse": 0.0001035489798244884,
+      "rmse": 0.010175901917004133,
+      "r2": 0.008165175494797117,
+      "rmsePips": 101.75901917004133,
+      "skillVsPersistence": 0.017716475783202013,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "naive",
+      "mse": 0.0001054165902935722,
+      "rmse": 0.010267258168253694,
+      "r2": -0.009723567639007724,
+      "rmsePips": 102.67258168253693,
+      "skillVsPersistence": 0.0,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "arima",
+      "mse": 0.00010849707015415393,
+      "rmse": 0.010416192689949333,
+      "r2": -0.03922967389993426,
+      "rmsePips": 104.16192689949332,
+      "skillVsPersistence": -0.029221964512445187,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "sarima",
+      "mse": 0.00010854800130218388,
+      "rmse": 0.010418637209452294,
+      "r2": -0.039717513435908014,
+      "rmsePips": 104.18637209452294,
+      "skillVsPersistence": -0.029705106187660757,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "rnn",
+      "mse": 0.00011487470641565301,
+      "rmse": 0.010717961859218058,
+      "r2": -0.1003173036660947,
+      "rmsePips": 107.17961859218057,
+      "skillVsPersistence": -0.08972132465811233,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "dqn",
+      "mse": 0.00012729175043969086,
+      "rmse": 0.011282364576616502,
+      "r2": -0.21925287117559145,
+      "rmsePips": 112.82364576616501,
+      "skillVsPersistence": -0.20751155093518991,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "gan",
+      "mse": 0.00014191252465194182,
+      "rmse": 0.011912704338307982,
+      "r2": -0.35929667507899476,
+      "rmsePips": 119.12704338307981,
+      "skillVsPersistence": -0.3462067427596829,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "lstm",
+      "mse": 0.0001617971809834954,
+      "rmse": 0.012719952082594313,
+      "r2": -0.5497601123468583,
+      "rmsePips": 127.19952082594313,
+      "skillVsPersistence": -0.5348360303905695,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "linear",
+      "mse": 0.00017423385321075748,
+      "rmse": 0.013199767165020658,
+      "r2": -0.6688836868800192,
+      "rmsePips": 131.99767165020657,
+      "skillVsPersistence": -0.6528124531967663,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "prophet",
+      "mse": 0.00033213884127838517,
+      "rmse": 0.01822467671258904,
+      "r2": -2.181362770633517,
+      "rmsePips": 182.2467671258904,
+      "skillVsPersistence": -2.150726468703071,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    },
+    {
+      "method": "polynomial",
+      "mse": 0.0027311201310879912,
+      "rmse": 0.0522601198916343,
+      "r2": -25.159794722378066,
+      "rmsePips": 522.601198916343,
+      "skillVsPersistence": -24.907877720975026,
+      "persistenceMse": 0.0001054165902935722,
+      "observations": 60
+    }
+  ],
+  "holdout": {
+    "samples": 60,
+    "firstDate": "2026-08-06T00:00:00",
+    "lastDate": "2026-10-28T00:00:00",
+    "trainLastDate": "2026-08-05T00:00:00"
+  },
+  "winner": "cnn",
+  "test": {
+    "metrics": {
+      "mse": 0.00037065899863476446,
+      "rmse": 0.01925250629488962,
+      "mae": 0.015143010078436844,
+      "r2": -0.16574564651264811
+    },
+    "persistence": {
+      "mse": 0.0003984657955806862,
+      "rmse": 0.01996160804095417,
+      "mae": 0.015884844462076823,
+      "r2": -0.2531997555523988
+    },
+    "rmsePips": 192.5250629488962,
+    "skillVsPersistence": 0.06978465216920005,
+    "targetVariance": 0.00031795872430971406,
+    "mseOverVariance": 1.1657456465126481
+  },
+  "failures": [],
+  "variants": {
+    "policy": "Solo VA; no se consultó TE para elegir transformación o scaler. Cambian dos factores en la comparación nivel/retorno; no es una ablación aislada de scaler.",
+    "variants": [
+      {
+        "method": "rnn",
+        "targetTransform": "level",
+        "featureScaler": "standard",
+        "validation": {
+          "mse": 0.00015562571101382648,
+          "rmse": 0.012475003447447479,
+          "mae": 0.009007917347435364,
+          "r2": -0.4906472283311907
+        },
+        "rmsePips": 124.75003447447477,
+        "skillVsPersistence": -0.4762923993313395
+      },
+      {
+        "method": "rnn",
+        "targetTransform": "difference",
+        "featureScaler": "robust",
+        "validation": {
+          "mse": 0.00011269522293227021,
+          "rmse": 0.010615800626060675,
+          "mae": 0.008793392840014628,
+          "r2": -0.07944131220855488
+        },
+        "rmsePips": 106.15800626060675,
+        "skillVsPersistence": -0.06904636754450055
+      },
+      {
+        "method": "rnn",
+        "targetTransform": "log_return",
+        "featureScaler": "robust",
+        "validation": {
+          "mse": 0.00011487470641565301,
+          "rmse": 0.010717961859218058,
+          "mae": 0.008843997737053695,
+          "r2": -0.1003173036660947
+        },
+        "rmsePips": 107.17961859218057,
+        "skillVsPersistence": -0.08972132465811233
+      },
+      {
+        "method": "lstm",
+        "targetTransform": "level",
+        "featureScaler": "standard",
+        "validation": {
+          "mse": 0.0003824583763591673,
+          "rmse": 0.019556543057482507,
+          "mae": 0.015760753384458846,
+          "r2": -2.6633440255973446
+        },
+        "rmsePips": 195.56543057482506,
+        "skillVsPersistence": -2.62806627774687
+      },
+      {
+        "method": "lstm",
+        "targetTransform": "difference",
+        "featureScaler": "robust",
+        "validation": {
+          "mse": 0.00016648541791902818,
+          "rmse": 0.012902922844031432,
+          "mae": 0.009883261638507482,
+          "r2": -0.5946659787887536
+        },
+        "rmsePips": 129.0292284403143,
+        "skillVsPersistence": -0.5793094564658829
+      },
+      {
+        "method": "lstm",
+        "targetTransform": "log_return",
+        "featureScaler": "robust",
+        "validation": {
+          "mse": 0.0001617971809834954,
+          "rmse": 0.012719952082594313,
+          "mae": 0.009823205374352923,
+          "r2": -0.5497601123468583
+        },
+        "rmsePips": 127.19952082594313,
+        "skillVsPersistence": -0.5348360303905695
+      }
+    ]
+  },
+  "policy": "Los 14 métodos se compararon solo en VA. TE se evaluó una vez para el ganador CNN. La comparación adicional de objetivo/scaler usa solo VA. No es búsqueda exhaustiva ni promesa de rentabilidad."
+}

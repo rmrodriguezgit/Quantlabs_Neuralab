@@ -40,6 +40,10 @@ def network_config(name,options=None):
     raw=networks.get(name,{})
     if not isinstance(raw,dict):raise ValueError('Configuración de red inválida.')
     cfg={**architecture(raw,name),'lookback':bounded_int(raw.get('lookback',8),2,120,'Ventana de entrada'),'epochs':bounded_int(raw.get('epochs',options.get('epochs',100)),1,MAX_EPOCHS,'Épocas'),'batchSize':bounded_int(raw.get('batchSize',32),8,256,'Tamaño de lote'),'features':normalize_features(raw.get('features')),**settings(raw),'validationFraction':real(raw.get('validationFraction',.2),.1,.4,'Fracción de validación interna')}
+    from scaling import validate_method
+    from target_transforms import validate_transform
+    cfg['targetTransform']=validate_transform(raw.get('targetTransform','level'));cfg['maxTrainSamples']=bounded_int(raw.get('maxTrainSamples',0),0,20000,'Historial de ajuste')
+    cfg['featureScaler']=validate_method(raw.get('featureScaler','standard'));cfg['targetScaler']=validate_method(raw.get('targetScaler','standard'))
     if isinstance(raw.get('configurationProfile'),dict):cfg['configurationProfile']=raw['configurationProfile']
     if name=='gan':cfg.update(discriminator=architecture(raw.get('discriminator'),'dense'),latentDim=bounded_int(raw.get('latentDim',8),1,64,'Dimensión latente'),draws=bounded_int(raw.get('draws',32),8,256,'Escenarios por paso'),reconstructionWeight=real(raw.get('reconstructionWeight',10),0,100,'Peso de reconstrucción'))
     return cfg
@@ -67,17 +71,18 @@ def build_network(tf,name,config,input_shape,outputs=1,output_activation='linear
 
 
 def metadata(model,cfg,prepared):
-    return {'config':cfg,'inputShape':list(model.input_shape[1:]),'outputShape':list(model.output_shape[1:]),'features':prepared['stream'].names,'trainingSamples':prepared['samples'],'warmup':prepared['stream'].warmup,'parameters':model.count_params(),'validationSamples':prepared.get('validationSamples',0),'trainingEndIndex':prepared.get('trainingEndIndex'),'layers':[{'name':layer.name,'type':type(layer).__name__,'units':getattr(layer,'units',getattr(layer,'filters',None)),'activation':getattr(getattr(layer,'activation',None),'__name__',None)} for layer in model.layers]}
+    return {'config':cfg,'inputShape':list(model.input_shape[1:]),'outputShape':list(model.output_shape[1:]),'features':prepared['stream'].names,'trainingSamples':prepared['samples'],'warmup':prepared['stream'].warmup,'parameters':model.count_params(),'historyOffset':prepared.get('historyOffset',0),'validationSamples':prepared.get('validationSamples',0),'trainingEndIndex':prepared.get('trainingEndIndex'),'scaling':{'featureMethod':prepared.get('featureMethod','standard'),'targetMethod':prepared.get('targetMethod','standard'),'featureCenter':prepared['featureMean'].tolist(),'featureScale':prepared['featureScale'].tolist(),'targetCenter':prepared['targetMean'],'targetScale':prepared['targetScale'],'fitTargetSamples':prepared['samples'],'targetTransform':prepared.get('targetTransform','level'),'featureFitLastIndex':prepared.get('trainingEndIndex',prepared['samples']+prepared.get('start',0)-1)-1,'trainingEndIndex':prepared.get('trainingEndIndex'),'validationSamples':prepared.get('validationSamples',0)},'layers':[{'name':layer.name,'type':type(layer).__name__,'units':getattr(layer,'units',getattr(layer,'filters',None)),'activation':getattr(getattr(layer,'activation',None),'__name__',None)} for layer in model.layers]}
 
 
 
 def prepared_validation(y,cfg):
     """Bloque interno exclusivo de la ventana de entrenamiento externa."""
     y=np.asarray(y,dtype=float);cut=len(y)-max(4,int(len(y)*cfg['validationFraction']))
-    p=training_windows(y[:cut],cfg['features'],cfg['lookback'])
+    p=training_windows(y[:cut],cfg['features'],cfg['lookback'],cfg['featureScaler'],cfg['targetScaler'],cfg['targetTransform'])
     matrix,stream=feature_matrix(y,cfg['features']);normalized=(matrix-p['featureMean'])/p['featureScale']
     p['validationX']=np.asarray([normalized[i-cfg['lookback']:i] for i in range(cut,len(y))],dtype=np.float32)
-    p['validationY']=((y[cut:]-p['targetMean'])/p['targetScale']).astype(np.float32)
+    from target_transforms import transform
+    p['validationY']=((transform(y,cfg['targetTransform'])[cut:]-p['targetMean'])/p['targetScale']).astype(np.float32)
     p['matrix']=matrix;p['stream']=stream;p['validationSamples']=len(y)-cut;p['trainingEndIndex']=cut-1
     return p
 
@@ -85,20 +90,28 @@ def neural_forecast(name,y,steps,seed,options):
     import tensorflow as tf
     cfg=network_config(name,options)
     tf.keras.backend.clear_session();tf.keras.utils.set_random_seed(seed)
-    p=prepared_validation(y,cfg)
+    full_count=len(y);y=np.asarray(y)[-cfg['maxTrainSamples']:] if cfg['maxTrainSamples'] else np.asarray(y)
+    p=prepared_validation(y,cfg);p['historyOffset']=full_count-len(y)
     model=build_network(tf,name,cfg,p['X'].shape[1:])
     control=TrainingControl(cfg)
     def score(X,target):return float(np.mean((model(X,training=False).numpy().ravel()-target)**2))
     callback=checkpoint_callback(tf,control,lambda:score(p['X'],p['target']),lambda:score(p['validationX'],p['validationY']))
     model.fit(p['X'],p['target'],epochs=cfg['epochs'],batch_size=cfg['batchSize'],shuffle=False,verbose=0,callbacks=[callback])
     model.set_weights(callback.best_weights)
-    rows=list(p['matrix'][-cfg['lookback']:]);out=[]
+    from target_transforms import restore
+    rows=list(p['matrix'][-cfg['lookback']:]);out=[];previous=float(y[-1])
     for _ in range(steps):
         X=((np.asarray(rows[-cfg['lookback']:])-p['featureMean'])/p['featureScale']).astype(np.float32)[None]
         value=float(model(X,training=False).numpy()[0,0])*p['targetScale']+p['targetMean']
+        value=float(restore(value,previous,cfg['targetTransform']));previous=value
         if not math.isfinite(value):raise ValueError('Pronóstico no finito; revisa arquitectura, activación y tasa de aprendizaje.')
         out.append(value);rows.append(p['stream'].append(value))
-    return {'prediction':out,'network':metadata(model,cfg,p),'trainingLoss':[h['train'] for h in callback.history],'validationLoss':[h['validation'] for h in callback.history],'trainingControl':control.report(cfg['epochs'],'MSE de validación interna, anterior al test externo'),'note':'La cola interna reserva validación del ajuste; no se usa el test externo. Indicadores calculados con el pasado disponible; pasos futuros usan predicciones recursivas.'}
+    info=metadata(model,cfg,p)
+    from engine import metrics
+    train_levels=restore(model(p['X'],training=False).numpy().ravel()*p['targetScale']+p['targetMean'],np.asarray(y)[p['start']-1:p['trainingEndIndex']],cfg['targetTransform'])
+    va_levels=restore(model(p['validationX'],training=False).numpy().ravel()*p['targetScale']+p['targetMean'],np.asarray(y)[p['trainingEndIndex']:-1],cfg['targetTransform'])
+    info['fitMetrics']={'train':metrics(np.asarray(y)[p['start']:p['trainingEndIndex']+1],train_levels),'internalValidation':metrics(np.asarray(y)[p['trainingEndIndex']+1:],va_levels),'note':'TR y VA interna: un paso con contexto observado. VA externa/TE: horizonte recursivo; no son métricas equivalentes.'}
+    return {'prediction':out,'network':info,'trainingLoss':[h['train'] for h in callback.history],'validationLoss':[h['validation'] for h in callback.history],'trainingControl':control.report(cfg['epochs'],'MSE de validación interna, anterior al test externo'),'note':'La cola interna reserva validación del ajuste; no se usa el test externo. Indicadores calculados con el pasado disponible; pasos futuros usan predicciones recursivas.'}
 
 
 def gan_forecast(y,steps,seed,options):
@@ -106,7 +119,7 @@ def gan_forecast(y,steps,seed,options):
     import tensorflow as tf
     cfg=network_config('gan',options)
     tf.keras.backend.clear_session();tf.keras.utils.set_random_seed(seed)
-    rng=np.random.default_rng(seed);p=prepared_validation(y,cfg)
+    rng=np.random.default_rng(seed);full_count=len(y);y=np.asarray(y)[-cfg['maxTrainSamples']:] if cfg['maxTrainSamples'] else np.asarray(y);p=prepared_validation(y,cfg);p['historyOffset']=full_count-len(y)
     X=p['X'].reshape(len(p['X']),-1);target=p['target'][:,None];width=X.shape[1]
     G=build_network(tf,'gan_generator',cfg,(width+cfg['latentDim'],),compile_model=False)
     D=build_network(tf,'gan_discriminator',cfg['discriminator'],(width+1,),output_activation='sigmoid',compile_model=False)
@@ -140,13 +153,15 @@ def gan_forecast(y,steps,seed,options):
         if improved:best_weights=([w.copy() for w in G.get_weights()],[w.copy() for w in D.get_weights()])
         if stop:break
     G.set_weights(best_weights[0]);D.set_weights(best_weights[1])
-    rows=list(p['matrix'][-cfg['lookback']:]);out=[];lower=[];upper=[]
+    from target_transforms import restore
+    rows=list(p['matrix'][-cfg['lookback']:]);out=[];lower=[];upper=[];previous=float(y[-1])
     for _ in range(steps):
         context=((np.asarray(rows[-cfg['lookback']:])-p['featureMean'])/p['featureScale']).astype(np.float32).reshape(1,-1)
         noise=rng.normal(size=(cfg['draws'],cfg['latentDim'])).astype(np.float32)
         draws=G(np.concatenate([np.repeat(context,cfg['draws'],axis=0),noise],axis=1),training=False).numpy().ravel()*p['targetScale']+p['targetMean']
+        draws=restore(draws,previous,cfg['targetTransform'])
         if not np.isfinite(draws).all():raise ValueError('El GAN produjo escenarios no finitos.')
-        value=float(np.mean(draws));out.append(value);lower.append(float(np.quantile(draws,.025)));upper.append(float(np.quantile(draws,.975)));rows.append(p['stream'].append(value))
+        value=float(np.mean(draws));previous=value;out.append(value);lower.append(float(np.quantile(draws,.025)));upper.append(float(np.quantile(draws,.975)));rows.append(p['stream'].append(value))
     info=metadata(G,cfg,p);info['discriminator']=metadata(D,cfg['discriminator'],p)
     return {'prediction':out,'lower':lower,'upper':upper,'intervalLabel':'Percentiles generativos 2.5–97.5% por paso; contexto recursivo medio, sin calibración','network':info,'ganLoss':losses,'trainingControl':control.report(cfg['epochs'],'MSE interno del generador con ruido fijo'),'note':'GAN condicional con pérdida adversarial + reconstrucción L1. El contexto futuro usa medias predichas. Puede sufrir colapso de modos; sus percentiles no son intervalos de confianza.'}
 
@@ -156,7 +171,7 @@ def dqn_forecast(y,steps,seed,options):
     import gymnasium as gym
     from gymnasium import spaces
     from collections import deque
-    cfg=network_config('dqn',options);p=training_windows(y,cfg['features'],cfg['lookback'])
+    cfg=network_config('dqn',options);full_count=len(y);y=np.asarray(y)[-cfg['maxTrainSamples']:] if cfg['maxTrainSamples'] else np.asarray(y);p=training_windows(y,cfg['features'],cfg['lookback'],cfg['featureScaler'],cfg['targetScaler'],'level');p['historyOffset']=full_count-len(y)
     tf.keras.backend.clear_session();tf.keras.utils.set_random_seed(seed);rng=np.random.default_rng(seed)
     # State is the full causal feature window, flattened. Action predicts next change.
     start=p['stream'].warmup+cfg['lookback']-1
@@ -191,4 +206,5 @@ def dqn_forecast(y,steps,seed,options):
         a=int(np.argmax(model(state,training=False).numpy()[0]))-1;last+=a*scale
         if not math.isfinite(last):raise ValueError('Pronóstico DQN no finito.')
         out.append(last);actions.append(a);rows.append(p['stream'].append(last))
-    return {'prediction':out,'actions':actions,'trainingRewards':rewards,'network':metadata(model,cfg,p),'note':'DQN con tres valores Q lineales para bajar/mantener/subir, características causales y memoria de experiencias. Política experimental, sin validación de rentabilidad.'}
+    info=metadata(model,cfg,p);info['scaling'].update(targetMethod='RL: cambio / desviación de cambios TR',targetTransform='dirección',targetCenter=0.,targetScale=scale)
+    return {'prediction':out,'actions':actions,'trainingRewards':rewards,'network':info,'note':'DQN con tres valores Q lineales para bajar/mantener/subir, características causales y memoria de experiencias. Política experimental, sin validación de rentabilidad.'}

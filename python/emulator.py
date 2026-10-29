@@ -76,12 +76,13 @@ def run(req):
     if mode in ('predictive','classification'):base['task']='classification' if mode=='classification' else 'regression'
     search=normalize_search(req.get('search') or {},base);rng=np.random.default_rng(base['seed']);history=[];best={};failures=[];total=len(families)*trials;done=0
     source_panel=panel(datasets,base,max(search['lookbacks'])) if mode in ('predictive','classification') else None
+    asset_dates={str(d['id']):[r['date'] for r in d['rows']] for d in datasets}
     for family in families:
         for trial in range(1,trials+1):
             cfg=candidate(base,rng,search,family);variant=f'{family}-{trial}';progress({'stage':'training','family':family,'trial':trial,'completed':done,'total':total})
             try:
                 if mode in ('predictive','classification'):
-                    p={**source_panel,'X':source_panel['X'][:,-cfg['lookback']:]}
+                    p={**source_panel,'X':source_panel['X'][:,-cfg['lookback']:],'meta':[{**m,'inputStartIndex':m['inputStartIndex']+source_panel['X'].shape[1]-cfg['lookback'],'inputStartDate':asset_dates[m['assetId']][m['inputStartIndex']+source_panel['X'].shape[1]-cfg['lookback']]} for m in source_panel['meta']],'scalerConfig':{'featureScaler':cfg.get('featureScaler','standard'),'targetScaler':cfg.get('targetScaler','standard')}}
                     if family=='logistic':
                         from sklearn.linear_model import LogisticRegression
                         s=scale_panel(p);X=s['X'].reshape(len(s['X']),-1);train=p['masks']['train'];linear=LogisticRegression(C=1/max(cfg['ridgeAlpha'],1e-6),random_state=cfg['seed'],max_iter=1000).fit(X[train],(p['y'][train]>0).astype(int));fitted={'predict':lambda mask,m=linear,z=X:m.decision_function(z[mask]),'scale':s,'models':{},'extras':{'logistic.json':{'coef':linear.coef_.ravel().tolist(),'intercept':float(linear.intercept_[0])}},'parameters':int(X.shape[1]+1),'trainingControl':None,'kind':'logistic','lookback':cfg['lookback']}
@@ -115,7 +116,11 @@ def run(req):
             p=f['prepared'];te=p['masks']['test'];noise=np.random.default_rng(base['seed']+999).normal(size=(int(te.sum()),cfg.get('latentDim',4))).astype(np.float32);samples=f['models']['generator'](np.concatenate([noise,p['c'][te]],axis=1),training=False).numpy()*p['std']+p['mean'];test=distribution(p['raw'][te],samples,float(np.quantile(p['raw'][p['masks']['train']],.05)));test['byRegime']=regime_evaluation(p,te,samples);scalers={'returnMean':p['mean'],'returnScale':p['std'],'conditionMean':p['conditionMean'],'conditionScale':p['conditionScale'],'conditionSchema':p['conditionSchema']}
         else:
             p=f['panel'];te=p['masks']['test'];test=test_trading(f['models']['online'],f['scale']['X'][te,0,:],[r for r,m in zip(p['meta'],te) if m],cfg)['metrics'];s=f['scale'];scalers={key:np.asarray(s[key]).tolist() for key in ('featureMean','featureScale','targetMean','targetScale')}
-        winner={**record,'test':test,'scalers':scalers,'kind':f['kind'],'lookback':f['lookback'],'features':base['selectedFeatures']}
+        audit=None
+        if mode in ('predictive','classification'):
+            from experiment_diagnostics import prediction_audit
+            audit=prediction_audit(p,cfg,f['predict'],f['scale'],f['parameters'],'regression' if mode=='predictive' else 'classification',datasets)
+        winner={**record,'diagnostics':audit,'test':test,'scalers':scalers,'kind':f['kind'],'lookback':f['lookback'],'features':base['selectedFeatures']}
         if root:
             winner['artifact']=export_bundle(root,family,f['kind'],cfg,datasets,scalers,f['models'],f['extras'],record['validation'],test,f['lookback'])
         winners.append(winner)

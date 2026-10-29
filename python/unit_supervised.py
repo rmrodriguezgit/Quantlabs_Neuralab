@@ -15,12 +15,14 @@ def model(tf,kind,shape,cfg,task='regression',variant=None):
     if kind=='mlp':
         h=tf.keras.layers.Flatten()(h)
         widths=cfg.get('denseWidths',([arch['inputUnits']] if cfg.get('projectInput',True) else [])+[l['units'] for l in hidden])
+        has_projection=cfg.get('projectInput',True) and 'denseWidths' not in cfg
         for i,width in enumerate(widths):
-            activation=arch['inputActivation'] if i==0 else hidden[min(i-1,len(hidden)-1)]['activation']
+            projection=has_projection and i==0;index=min(max(i-1 if has_projection else i,0),len(hidden)-1)
+            activation=arch['inputActivation'] if projection else hidden[index]['activation']
             h=tf.keras.layers.Dense(width,kernel_initializer=tf.keras.initializers.HeNormal(seed+i),kernel_regularizer=penalty,name=f'dense_{i}')(h)
             if reg.get('batchNorm'):h=tf.keras.layers.BatchNormalization(name=f'bn_{i}')(h)
             h=tf.keras.layers.Activation(activation)(h)
-            dropout=reg.get('dropout',hidden[min(i-1,len(hidden)-1)]['dropout'] if i>0 and variant is None else 0)
+            dropout=reg.get('dropout',hidden[index]['dropout'] if not projection and variant is None else 0)
             if dropout:h=tf.keras.layers.Dropout(dropout,seed=seed+200+i)(h)
     else:
         if kind=='cnn' and cfg.get('cnnPadding','valid')=='valid' and shape[0]<1+sum(l['kernelSize']-1 for l in hidden):raise ValueError('Ventana CNN demasiado corta para kernels con padding valid; aumenta sesiones o usa causal/same.')
@@ -106,7 +108,9 @@ def run(datasets,cfg,unit):
     selected=fitted.get(winner);testpred=selected[0]['predict'](test) if selected else refpredict(test)
     test_result=evaluate(p,testpred,test,task,cfg)
     baseline=evaluate(p,refpredict(test),test,task,cfg)
-    return {'unit':unit,'task':task,'winner':winner,'criterion':f'validation {key}','config':cfg,'features':cfg['selectedFeatures'],'splits':split_summary(p),'purgedSamples':p['purged'],'excludedSamples':p['excluded'],'comparison':comparison,'failures':failures,'test':test_result,'referenceTest':baseline,'trials':trials,'checkpointPolicy':'Pesos con menor pérdida de datos en validación; test consultado tras selección. Estado recurrente reiniciado por ventana.','units':'probabilidad de alza' if task=='classification' else 'bps log intradía siguiente','note':'Evaluación retrospectiva: señal al cierre t, entrada en apertura t+1 y salida al cierre t+1; sin exposición nocturna, costes de entrada y salida. Cada activo tiene su propia curva de capital; no se mezclan capitales de activos.'}
+    from experiment_diagnostics import prediction_audit
+    audit=prediction_audit(p,cfg,selected[0]['predict'] if selected else refpredict,selected[0]['scale'] if selected else s,selected[0]['parameters'] if selected else X.shape[1]+1,task,datasets)
+    return {'diagnostics':audit,'bestOverallValidation':comparison[0]['model'],'referenceBeatsSelected':comparison[0].get('reference',False),'unit':unit,'task':task,'winner':winner,'criterion':f'validation {key}','config':cfg,'features':cfg['selectedFeatures'],'splits':split_summary(p),'purgedSamples':p['purged'],'excludedSamples':p['excluded'],'comparison':comparison,'failures':failures,'test':test_result,'referenceTest':baseline,'trials':trials,'checkpointPolicy':'Pesos con menor pérdida de datos en validación; test consultado tras selección. Estado recurrente reiniciado por ventana.','units':'probabilidad de alza' if task=='classification' else 'bps log intradía siguiente','note':'Evaluación retrospectiva: señal al cierre t, entrada en apertura t+1 y salida al cierre t+1; sin exposición nocturna, costes de entrada y salida. Cada activo tiene su propia curva de capital; no se mezclan capitales de activos.'}
 
 
 def hpo(p,cfg):
