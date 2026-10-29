@@ -70,6 +70,11 @@ ipcMain.handle('artifacts:bundle',async(event,ids:string[],report:unknown)=>{
   return engine({action:'bundle_artifacts',ids,report,artifactRoot:path.join(app.getPath('userData'),'forecast-artifacts')});
 });
 app.whenReady().then(async () => {
+  const storedUserData=app.getPath('userData');
+  app.setName('Quantlabs Neurolab');
+  app.setPath('userData',storedUserData);
+  const iconPath=path.join(__dirname,'..','dist','icon.png');
+  if(process.platform==='darwin')app.dock?.setIcon(iconPath);
   if (app.isPackaged && !process.env.FORECAST_PYTHON) {
     const configPath=path.join(app.getPath('userData'),'runtime.json');
     try { configuredPython=JSON.parse(await fs.readFile(configPath,'utf8')).python; } catch {}
@@ -82,7 +87,7 @@ app.whenReady().then(async () => {
     }
   }
   const create = () => {
-    win=new BrowserWindow({width:1480,height:980,minWidth:1000,minHeight:720,backgroundColor:'#f2f5f8',webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
+    win=new BrowserWindow({title:'Quantlabs Neurolab · v'+app.getVersion(),icon:iconPath,width:1480,height:980,minWidth:1000,minHeight:720,backgroundColor:'#f2f5f8',webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
     win.webContents.setWindowOpenHandler(() => ({action:'deny'}));
     win.webContents.on('will-navigate', event => event.preventDefault());
     win.loadFile(path.join(__dirname,'..','dist','index.html'),{hash:process.argv.includes('--emulator')?'emulator':process.argv.includes('--curriculum')?'curriculum':process.argv.includes('--neural-studio')?'networks':''});

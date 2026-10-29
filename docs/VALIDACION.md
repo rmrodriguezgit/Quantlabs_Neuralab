@@ -73,3 +73,7 @@ Vite advierte que el bundle principal supera 500 kB; la compilación concluye co
 ## Reingeniería 1.4
 
 78 pruebas Python aprobadas (61 s), incluidas once nuevas del endpoint de comprobación previa. Build aprobado. Pruebas Electron de guía y emulador aprobadas: la ejecución requiere una revisión vigente, y las entradas inválidas o cambios posteriores la bloquean. Véase [recorrido guiado](REINGENIERIA_USO.md).
+
+## Identidad 1.4.1
+
+Build aprobado y prueba Electron `node tests/smoke-brand.cjs` aprobada: nombre, título, versión visible 1.4.1 e icono SVG cargado. Iconos PNG, ICNS e ICO incluidos; los instaladores de Windows no se ejecutaron en macOS.
