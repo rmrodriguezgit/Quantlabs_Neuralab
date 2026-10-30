@@ -39,7 +39,7 @@ function trusted(event: Electron.IpcMainInvokeEvent) {
 }
 ipcMain.handle('engine:run', async (event, request) => {
   trusted(event);
-  if (!request || !['simulate','finance','analyze','capabilities','unit_lab','demo_ohlc','emulate','preview_experiment'].includes(request.action)) throw new Error('Operación no permitida');
+  if (!request || !['simulate','finance','analyze','capabilities','unit_lab','demo_ohlc','emulate','preview_experiment','strategy_preview','strategy_search'].includes(request.action)) throw new Error('Operación no permitida');
   if(request.action==='emulate'){const artifactRoot=path.join(app.getPath('userData'),'forecast-artifacts');await fs.mkdir(artifactRoot,{recursive:true});return engine({...request,artifactRoot});}
   return engine(request);
 });

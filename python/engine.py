@@ -192,6 +192,9 @@ def capabilities():
 
 def dispatch(req):
     action=req.get('action')
+    if action in ('strategy_preview','strategy_search'):
+        from strategy_search import preview,run
+        return preview(req) if action=='strategy_preview' else run(req)
     if action=='preview_experiment':
         from experiment_preview import preview
         return preview(req)

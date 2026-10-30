@@ -7,7 +7,7 @@ type Props={request:Record<string,unknown>;busy:boolean;onAction:(fn:()=>Promise
 export function ExperimentReview({request,busy,onAction,onRun,runLabel,prefix,issues=[]}:Props){
  const fingerprint=JSON.stringify(request);const [checked,setChecked]=useState<{fingerprint:string;preview:Preview}|null>(null);const [error,setError]=useState('');const [started,setStarted]=useState<string|null>(null);const valid=checked?.fingerprint===fingerprint;const preview=checked&&valid?checked.preview:null;
  useEffect(()=>setError(''),[fingerprint]);
- useEffect(()=>{const root=document.getElementById(prefix+'-form');const invalidate=()=>setChecked(null);root?.addEventListener('input',invalidate);return ()=>root?.removeEventListener('input',invalidate)},[prefix]);
+ useEffect(()=>{const root=document.getElementById(prefix+'-form');const invalidate=()=>queueMicrotask(()=>setChecked(null));root?.addEventListener('input',invalidate);return ()=>root?.removeEventListener('input',invalidate)},[prefix]);
  function inputsValid(){const bad=Array.from(document.getElementById(prefix+'-form')?.querySelectorAll<HTMLInputElement>('input')||[]).find(i=>i.validity.customError||i.validity.rangeUnderflow||i.validity.rangeOverflow||i.validity.badInput||(i.type==='number'&&i.value==='')); if(bad){bad.focus();setError('Paso 3: corrige el campo marcado antes de continuar. '+bad.validationMessage);return false}return true}
 
  async function verify(){setError('');if(!inputsValid())return;try{const p:Preview=await window.lab.run({action:'preview_experiment',...request});setChecked({fingerprint,preview:p})}catch(e){setChecked(null);setError(e instanceof Error?e.message:String(e))}}

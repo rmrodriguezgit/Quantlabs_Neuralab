@@ -1,8 +1,10 @@
-# Quantlabs Neurolab · 1.7.0
+# Quantlabs Neurolab · 1.8.0
 
 Aplicación de escritorio para explorar series empresariales y financieras, generar escenarios, comparar pronósticos y estudiar los métodos. Interfaz en español, Electron + React/TypeScript y motor Python mediante JSON por entrada/salida estándar.
 
-**Nuevo 1.7.0:** [Auditoría MSE/R² y Forex](docs/REVISION_MSE_R2.md): precisión de métricas, error en pips, referencia de persistencia, fechas TR/VA/TE, scalers configurables, objetivos nivel/diferencia/log-retorno y preparación Forex.
+**Nuevo 1.8.0:** [Optimización por etapas](docs/ESTRATEGIAS_R2.md): historial/objetivo, ajustes de red, varias semillas y mezcla con persistencia; TE reservado y respaldo a persistencia si no hay mejora en VA.
+
+**Versión 1.7.0:** [Auditoría MSE/R² y Forex](docs/REVISION_MSE_R2.md): precisión de métricas, error en pips, referencia de persistencia, fechas TR/VA/TE, scalers configurables, objetivos nivel/diferencia/log-retorno y preparación Forex.
 
 **Versión 1.6.0:** [Perfiles recomendados y ajuste libre](docs/PERFILES_MODELOS.md): ajustes específicos, indicador de configuración activa, recuperación de valores y perfil registrado en resultados/exportaciones.
 

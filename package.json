@@ -1,6 +1,6 @@
 {
   "name": "forecast-lab",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "private": true,
   "description": "Quantlabs Neurolab · Laboratorio de análisis, simulación y redes neuronales",
   "main": "dist-electron/main.js",
@@ -21,7 +21,8 @@
     "smoke:infographics": "node tests/smoke-infographics.cjs",
     "test:profiles": "node tests/test-profiles.cjs",
     "smoke:profiles": "node tests/smoke-profiles.cjs",
-    "smoke:fx-audit": "node tests/smoke-fx-audit.cjs"
+    "smoke:fx-audit": "node tests/smoke-fx-audit.cjs",
+    "smoke:strategies": "node tests/smoke-strategies.cjs"
   },
   "dependencies": {
     "katex": "^0.16.22",

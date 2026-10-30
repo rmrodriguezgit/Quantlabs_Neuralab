@@ -101,3 +101,11 @@ Build aprobado y `npm run smoke:infographics` aprobado: ambas láminas de Unidad
 - Prueba adicional con EURUSD=X diario real: los 14 métodos de Análisis y Simulación completaron tres folds externos de veinte pasos. TE se consultó solo para el ganador de VA. Informe y limitaciones en `REVISION_MSE_R2.md`; resumen reproducible en `examples/auditoria-eurusd-resumen-v1.7.json`.
 - Comparación adicional RNN/LSTM de objetivo/scaler exclusivamente en VA; no se usó TE para retocar parámetros. Son resultados de un presupuesto acotado, no un óptimo demostrado.
 - Build TypeScript/Vite y verificación de perfiles/precisión JavaScript aprobados.
+
+## Estrategias por etapas 1.8.0
+
+- **113 pruebas Python aprobadas** (76 s), incluidas ocho nuevas: cambiar TE no altera el ganador, mezcla elegida en búsqueda, TE solo para el ganador, respaldo a persistencia, fallo explícito de candidatos, reserva temporal y validación sin entrenar.
+- Prueba Electron de estrategias aprobada: plan, bloqueo de listas incompletas, búsqueda real, semillas, TE, JSON y resultados conservados al navegar.
+- Prueba Electron de guía previa aprobada: editar conserva el nuevo valor e invalida la revisión. Se corrigió una interferencia entre eventos nativos de invalidación y entradas controladas de React.
+- Build TypeScript/Vite aprobado.
+- Prueba real acotada en EURUSD=X: **54 ajustes**, 6 candidatos de historial/objetivo, 4 refinamientos, 3 semillas, 6 folds de 20 pasos y TE de 20. Se conservaron R² negativos de TE y todos los errores, sin retocar selección con TE. Informe de resultados y JSON entregados por separado; el repositorio contiene un resumen.
