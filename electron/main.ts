@@ -1,45 +1,18 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
-import { spawn } from 'node:child_process';
+import {PythonEngine} from './engineProcess';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 let win: BrowserWindow;
 let configuredPython: string | undefined;
-const children = new Set<ReturnType<typeof spawn>>();
 const root = () => app.isPackaged ? process.resourcesPath : path.resolve(__dirname, '..');
-function engine(request: unknown): Promise<any> {
-  const base = root();
-  const runtime = app.isPackaged ? 'python-runtime' : '.venv';
-  const python = process.env.FORECAST_PYTHON || configuredPython || path.join(base, runtime, process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
-  const input = JSON.stringify(request);
-  if (Buffer.byteLength(input) > 20_000_000) return Promise.reject(new Error('Solicitud superior a 20 MB.'));
-  const settings = request as {config?:{timeoutMinutes?:number};options?:{timeoutMinutes?:number}};
-  const timeoutMinutes=Number(settings.config?.timeoutMinutes ?? settings.options?.timeoutMinutes ?? 60);
-  if(!Number.isInteger(timeoutMinutes)||timeoutMinutes<1||timeoutMinutes>240)return Promise.reject(new Error('Tiempo de ejecución: entre 1 y 240 minutos.'));
-  return new Promise((resolve, reject) => {
-    const child = spawn(python, [path.join(base,'python','engine.py')], { stdio:['pipe','pipe','pipe'], windowsHide:true, env:{...process.env,PYTHONUTF8:'1',TF_CPP_MIN_LOG_LEVEL:'3'} });
-    children.add(child);
-    let output = '', diagnostic = '', settled = false;
-    const finish = (err?: Error, value?: unknown) => { if(settled) return; settled=true; clearTimeout(timer); children.delete(child); err ? reject(err) : resolve(value); };
-    const timer = setTimeout(() => { child.kill(); finish(new Error('El cálculo excedió el tiempo configurado. Aumenta los minutos de ejecución o reduce el presupuesto.')); }, timeoutMinutes*60_000);
-    child.stdout.on('data', b => { output += b.toString(); if(output.length>60_000_000){ child.kill(); finish(new Error('Respuesta demasiado grande.')); } });
-    let stderrBuffer='';
-    child.stderr.on('data', b => { diagnostic=(diagnostic+b.toString()).slice(-4000);stderrBuffer+=b.toString();let at:number;while((at=stderrBuffer.indexOf('\n'))>=0){const line=stderrBuffer.slice(0,at);stderrBuffer=stderrBuffer.slice(at+1);if(line.startsWith('LAB_PROGRESS ')){try{const value=JSON.parse(line.slice(13));if(win&&!win.isDestroyed())win.webContents.send('engine:progress',value);}catch{}}}if(stderrBuffer.length>100000)stderrBuffer=stderrBuffer.slice(-10000); });
-    child.stdin.on('error', e => finish(e));
-    child.on('error', e => finish(new Error(`No se pudo iniciar Python: ${e.message}. Ejecuta el arrancador.`)));
-    child.on('close', code => {
-      if(settled) return;
-      try { const response=JSON.parse(output); if(!response.ok) finish(new Error(response.error || 'Error del motor')); else finish(undefined,response.data); }
-      catch { finish(new Error(`El motor terminó (${code}): ${diagnostic || 'respuesta JSON inválida'}`)); }
-    });
-    child.stdin.end(input);
-  });
-}
+const manager=new PythonEngine(()=>{const base=root();const runtime=app.isPackaged?'python-runtime':'.venv';return {base,python:process.env.FORECAST_PYTHON||configuredPython||path.join(base,runtime,process.platform==='win32'?'Scripts/python.exe':'bin/python')}} ,value=>{if(win&&!win.isDestroyed())win.webContents.send('engine:progress',value)});
+const engine=(request:unknown)=>manager.run(request);
 function trusted(event: Electron.IpcMainInvokeEvent) {
   if (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame) throw new Error('Origen IPC no autorizado');
 }
 ipcMain.handle('engine:run', async (event, request) => {
   trusted(event);
-  if (!request || !['simulate','finance','analyze','capabilities','unit_lab','demo_ohlc','emulate','preview_experiment','strategy_preview','strategy_search'].includes(request.action)) throw new Error('Operación no permitida');
+  if (!request || !['simulate','finance','analyze','capabilities','unit_lab','demo_ohlc','emulate','preview_experiment','strategy_preview','strategy_search','study_catalog','study_preview','study_run'].includes(request.action)) throw new Error('Operación no permitida');
   if(request.action==='emulate'){const artifactRoot=path.join(app.getPath('userData'),'forecast-artifacts');await fs.mkdir(artifactRoot,{recursive:true});return engine({...request,artifactRoot});}
   return engine(request);
 });
@@ -90,9 +63,9 @@ app.whenReady().then(async () => {
     win=new BrowserWindow({title:'Quantlabs Neurolab · v'+app.getVersion(),icon:iconPath,width:1480,height:980,minWidth:1000,minHeight:720,backgroundColor:'#f2f5f8',webPreferences:{preload:path.join(__dirname,'preload.js'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
     win.webContents.setWindowOpenHandler(() => ({action:'deny'}));
     win.webContents.on('will-navigate', event => event.preventDefault());
-    win.loadFile(path.join(__dirname,'..','dist','index.html'),{hash:process.argv.includes('--emulator')?'emulator':process.argv.includes('--curriculum')?'curriculum':process.argv.includes('--neural-studio')?'networks':''});
+    win.loadFile(path.join(__dirname,'..','dist','index.html'),{hash:process.argv.includes('--study')?'study':process.argv.includes('--emulator')?'emulator':process.argv.includes('--curriculum')?'curriculum':process.argv.includes('--neural-studio')?'networks':''});
   };
   create(); app.on('activate',()=>{if(BrowserWindow.getAllWindows().length===0) create();});
 });
-app.on('before-quit',()=>children.forEach(c=>c.kill()));
+app.on('before-quit',()=>manager.stopAll());
 app.on('window-all-closed',()=>{if(process.platform!=='darwin') app.quit();});

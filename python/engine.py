@@ -94,12 +94,8 @@ def import_files(req):
     return out
 
 def metrics(actual,predicted):
-    a=np.asarray(actual,dtype=float);p=np.asarray(predicted,dtype=float)
-    if a.ndim!=1 or p.ndim!=1 or a.shape!=p.shape or not len(a) or not np.isfinite(a).all() or not np.isfinite(p).all():raise ValueError('Métricas requieren vectores 1D finitos, no vacíos y de igual longitud.')
-    residual=a-p;mse=float(np.mean(residual**2));centered=a-a.mean();den=float(np.sum(centered**2))
-    # R² is undefined for a constant target; do not use a unit-dependent cutoff.
-    constant=bool(np.all(a==a[0])) or len(a)<2
-    return {'mse':mse,'rmse':math.sqrt(mse),'mae':float(np.mean(np.abs(residual))),'r2':None if constant or den==0 else float(1-np.sum(residual**2)/den)}
+    from domain.metrics import regression
+    return regression(actual,predicted)
 
 
 def horizons(ds,index):
@@ -192,6 +188,10 @@ def capabilities():
 
 def dispatch(req):
     action=req.get('action')
+    if action in ('study_catalog','study_preview','study_run'):
+        from methods.registry import catalog
+        from study_runner import preview,run
+        return catalog() if action=='study_catalog' else preview(req) if action=='study_preview' else run(req)
     if action in ('strategy_preview','strategy_search'):
         from strategy_search import preview,run
         return preview(req) if action=='strategy_preview' else run(req)

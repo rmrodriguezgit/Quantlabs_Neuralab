@@ -13,10 +13,12 @@ fi
 [ -n "$PY" ] || { echo 'Instala Python 3.10, 3.11 o 3.12 (recomendado 3.12).'; exit 1; }
 "$PY" -c 'import sys; assert (3,10)<=sys.version_info[:2]<=(3,12)' || { echo 'Utiliza Python 3.10–3.12.'; exit 1; }
 [ -x .venv/bin/python ] || "$PY" -m venv .venv
+.venv/bin/python -c 'import sys; assert (3,10)<=sys.version_info[:2]<=(3,12)' || { echo 'La .venv existente requiere Python 3.10–3.12. Recrea el entorno compatible.'; exit 1; }
 .venv/bin/python -m pip install --upgrade pip
 REQ=python/requirements.txt
-[ "${FORECAST_ADVANCED:-0}" = 1 ] && REQ=python/requirements-advanced.txt
+[ "${FORECAST_ADVANCED:-1}" = 1 ] && REQ=python/requirements-advanced.txt
 .venv/bin/python -m pip install -r "$REQ"
+.venv/bin/python python/check_environment.py "$REQ"
 if [ -f package-lock.json ]; then npm ci; else npm install; fi
 export FORECAST_PYTHON="$PWD/.venv/bin/python"
 npm run dev

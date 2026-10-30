@@ -22,11 +22,15 @@ if errorlevel 1 exit /b 1
 "%FORECAST_PYTHON%" -m venv .venv
 if errorlevel 1 exit /b 1
 :dependencies
+.venv\Scripts\python.exe -c "import sys; assert (3,10)<=sys.version_info[:2]<=(3,12)"
+if errorlevel 1 (echo Recrea .venv con Python 3.10-3.12. & exit /b 1)
 .venv\Scripts\python.exe -m pip install --upgrade pip
 if errorlevel 1 exit /b 1
-set REQ=python\requirements.txt
-if "%FORECAST_ADVANCED%"=="1" set REQ=python\requirements-advanced.txt
+set REQ=python\requirements-advanced.txt
+if "%FORECAST_ADVANCED%"=="0" set REQ=python\requirements.txt
 .venv\Scripts\python.exe -m pip install -r "%REQ%"
+if errorlevel 1 exit /b 1
+.venv\Scripts\python.exe python\check_environment.py "%REQ%"
 if errorlevel 1 exit /b 1
 if exist package-lock.json (call npm ci) else (call npm install)
 if errorlevel 1 exit /b 1
